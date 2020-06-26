@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFC845</color>
+    <color name="colorPrimaryDark">#FFB400</color>
+    <color name="colorAccent">#FFC845</color>
+
+    <color name="colorBackground">#FFFFFF</color>
+    <color name="errorColor">#B71C1C</color>
+    <color name="infoColor">#0F4C81</color>
+    <color name="successColor">#00BDAA</color>
+    <color name="colorTextHint">#8A8A8A</color>
+    <color name="colorQuickActionsBackground">#EFEFEF</color>
+    <color name="colorIcons">#0E0E0E</color>
+    <color name="colorTextSubtitle">#2E2E2E</color>
+    <color name="colorDefaultNoteColor">#F4F4F4</color>
+    <color name="colorNoteSubtitleText">#292929</color>
+    <color name="colorMiscellaneousBackground">#FAFAFA</color>
+    <color name="colorText">#000000</color>
+    <color name="colorNote2">#FFC845</color>
+    <color name="colorNote3">#4D8DFF</color>
+    <color name="colorNote4">#FF6060</color>
+    <color name="colorNote5">#4DFFAC</color>
+    <color name="colorNote6">#FF509C</color>
+    <color name="colorNote7">#11E7FF</color>
+    <color name="colorNote8">#FF8F44</color>
+    <color name="colorDelete">#FF4842</color>
+    <color name="colorSearchBackground">#EFEFEF</color>
+</resources>

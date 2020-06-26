@@ -1,0 +1,63 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId "com.developerdepository.noted"
+        minSdkVersion 23
+        targetSdkVersion 29
+        multiDexEnabled true
+        versionCode 1
+        versionName "1.0"
+        resConfig "en"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    //Google Material Design
+    implementation 'com.google.android.material:material:1.3.0-alpha01'
+
+    //In-App updates
+    implementation 'com.google.android.play:core:1.7.3'
+
+    //Room (for database)
+    def room_version = "2.2.5"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    //Scalable Size Unit (support for different screen sizes)
+    implementation "com.intuit.sdp:sdp-android:1.0.6"
+    implementation "com.intuit.ssp:ssp-android:1.0.6"
+
+    //Third Party Libraries
+    implementation 'com.shreyaspatil:MaterialDialog:2.1'                   //MaterialDialog Library
+    implementation 'com.airbnb.android:lottie:3.4.0'                       //Lottie Animations Library
+    implementation 'com.github.hajiyevelnur92:intentanimation:1.0'         //IntentAnimation Library
+    implementation "com.makeramen:roundedimageview:2.3.0"                  //RoundImageView Library
+    implementation 'com.github.hotchemi:android-rate:1.0.1'                //RateMe Library
+    implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.3.0'       //KeyboardVisibilityEvent Library
+    implementation 'com.tapadoo.android:alerter:2.0.4'                     //Alerter Library
+}
