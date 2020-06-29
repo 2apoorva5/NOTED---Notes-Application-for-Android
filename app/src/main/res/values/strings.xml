@@ -10,4 +10,18 @@
     <string name="don_t_bother_remembering">Don\'t Bother Remembering!</string>
     <string name="miscellaneous">Miscellaneous</string>
     <string name="pick_color">Pick Color For Note</string>
+    <string name="add_image">Add Image</string>
+    <string name="add_url">Add URL</string>
+    <string name="enter_url">Enter Url</string>
+    <string name="add">ADD</string>
+    <string name="cancel">CANCEL</string>
+    <string name="delete_note">Delete Note</string>
+    <string name="whoa_you_don_t_have_any_saved_notes_yet">You don\'t have any notes in here!</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="add_voice_note">Add Voice Note</string>
+    <string name="select_image">Select Image</string>
+    <string name="reading_text">Do you want us to read the note for you?</string>
+    <string name="stop_reading">CANCEL</string>
+    <string name="start_reading">READ</string>
+    <string name="read_note">Read Note</string>
 </resources>

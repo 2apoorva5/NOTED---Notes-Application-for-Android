@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_app_info"
+            android:title="App Info"
+            android:icon="@drawable/ic_menu_info"
+            android:iconTint="@color/colorIcons"
+            android:orderInCategory="100"/>
+
+        <item
+            android:id="@+id/nav_rate_noted"
+            android:title="Rate NOTED"
+            android:icon="@drawable/ic_menu_rate"
+            android:iconTint="@color/colorIcons"
+            android:orderInCategory="200"/>
+
+        <item
+            android:id="@+id/nav_share_noted"
+            android:title="Share NOTED"
+            android:icon="@drawable/ic_menu_share"
+            android:iconTint="@color/colorIcons"
+            android:orderInCategory="300"/>
+
+        <item
+            android:id="@+id/nav_more_apps"
+            android:title="More Apps"
+            android:icon="@drawable/ic_menu_more"
+            android:iconTint="@color/colorIcons"
+            android:orderInCategory="400"/>
+
+        <item
+            android:id="@+id/nav_privacy_policy"
+            android:title="Privacy Policy"
+            android:icon="@drawable/ic_menu_policy"
+            android:iconTint="@color/colorIcons"
+            android:orderInCategory="500"/>
+
+    </group>
+
+</menu>

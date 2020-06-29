@@ -21,25 +21,27 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_add_image"
+        android:id="@+id/layout_read_note"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintTop_toBottomOf="@+id/top_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:id="@+id/image_img"
+            android:id="@+id/image_read"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
             android:layout_marginStart="12dp"
-            android:src="@drawable/ic_image"
+            android:src="@drawable/ic_read_note"
             android:scaleType="centerCrop"
             android:tint="@color/colorIcons"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,23 +49,71 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
-            android:id="@+id/text_add_image"
+            android:id="@+id/text_read_note"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/poppins"
             android:includeFontPadding="false"
-            android:text="Add Image"
+            android:text="@string/read_note"
             android:textAlignment="textStart"
             android:textAllCaps="false"
             android:textColor="@color/colorText"
             android:textSize="14sp"
             android:textStyle="normal"
-            app:layout_constraintBottom_toBottomOf="@+id/image_img"
-            app:layout_constraintStart_toEndOf="@+id/image_img"
+            app:layout_constraintBottom_toBottomOf="@+id/image_read"
+            app:layout_constraintStart_toEndOf="@+id/image_read"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/image_img" />
+            app:layout_constraintTop_toTopOf="@+id/image_read" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_delete_note"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@+id/layout_read_note"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/image_delete"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="12dp"
+            android:src="@drawable/material_dialog_delete"
+            android:scaleType="centerCrop"
+            android:tint="@color/colorIcons"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/text_delete_note"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/poppins"
+            android:includeFontPadding="false"
+            android:text="@string/delete_note"
+            android:textAlignment="textStart"
+            android:textAllCaps="false"
+            android:textColor="@color/colorText"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="@+id/image_delete"
+            app:layout_constraintStart_toEndOf="@+id/image_delete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/image_delete" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -76,7 +126,7 @@
         android:src="@drawable/ic_color"
         android:scaleType="centerCrop"
         android:tint="@color/colorIcons"
-        app:layout_constraintTop_toBottomOf="@+id/layout_add_image"
+        app:layout_constraintTop_toBottomOf="@+id/layout_delete_note"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
@@ -104,7 +154,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="24dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="72dp"
         android:scrollbars="none"
         app:layout_constraintTop_toBottomOf="@+id/image_color"
         app:layout_constraintStart_toStartOf="parent"

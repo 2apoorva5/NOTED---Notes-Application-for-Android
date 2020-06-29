@@ -8,12 +8,24 @@
     android:background="@drawable/background_note"
     android:layout_margin="8dp">
 
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/item_note_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:visibility="gone"
+        app:riv_corner_radius_top_left="8dp"
+        app:riv_corner_radius_top_right="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
         android:id="@+id/item_note_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="12dp"
         android:fontFamily="@font/poppins"
         android:includeFontPadding="false"
@@ -24,7 +36,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/item_note_image" />
 
     <TextView
         android:id="@+id/item_note_subtitle"

@@ -28,6 +28,7 @@
                 android:src="@drawable/ic_back"
                 android:scaleType="centerCrop"
                 android:tint="@color/colorIcons"
+                android:contentDescription="@string/app_name"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
@@ -42,6 +43,7 @@
                 android:src="@drawable/ic_save"
                 android:scaleType="centerCrop"
                 android:tint="@color/colorIcons"
+                android:contentDescription="@string/app_name"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
@@ -130,19 +132,68 @@
                 app:layout_constraintTop_toTopOf="@+id/input_note_subtitle"
                 app:layout_constraintBottom_toBottomOf="@+id/input_note_subtitle"/>
 
+            <TextView
+                android:id="@+id/text_url"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/poppins"
+                android:includeFontPadding="false"
+                android:textAlignment="textStart"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                android:autoLink="web"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/remove_url_btn"
+                app:layout_constraintTop_toBottomOf="@+id/input_note_subtitle" />
+
+            <ImageButton
+                android:id="@+id/remove_url_btn"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/background_remove"
+                android:contentDescription="@string/app_name"
+                android:padding="4dp"
+                android:src="@drawable/ic_remove"
+                android:tint="@color/colorBackground"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="@+id/text_url"
+                app:layout_constraintBottom_toBottomOf="@+id/text_url"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
             <ImageView
                 android:id="@+id/image_note"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
                 android:adjustViewBounds="true"
                 android:visibility="gone"
                 android:contentDescription="@string/app_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/input_note_subtitle"/>
+                app:layout_constraintTop_toBottomOf="@+id/text_url"/>
+            
+            <ImageButton
+                android:id="@+id/remove_img_btn"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/background_remove"
+                android:contentDescription="@string/app_name"
+                android:padding="4dp"
+                android:src="@drawable/ic_remove"
+                android:tint="@color/colorBackground"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@+id/image_note"
+                app:layout_constraintTop_toTopOf="@+id/image_note"/>
 
             <EditText
                 android:id="@+id/input_note"
@@ -182,11 +233,11 @@
         android:layout_gravity="bottom">
 
         <ImageButton
-            android:id="@+id/create_note_image_btn"
+            android:id="@+id/create_note_add_actions"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginStart="12dp"
-            android:src="@drawable/ic_image"
+            android:src="@drawable/ic_add_actions"
             android:scaleType="centerCrop"
             android:tint="@color/colorIcons"
             android:background="?attr/selectableItemBackgroundBorderless"
@@ -212,6 +263,9 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        layout="@layout/layout_add_actions" />
 
     <include
         layout="@layout/layout_miscellaneous" />

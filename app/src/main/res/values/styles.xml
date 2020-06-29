@@ -21,9 +21,9 @@
         <item name="material_dialog_background">@color/colorBackground</item>
         <item name="material_dialog_title_text_color">@color/colorText</item>
         <item name="material_dialog_message_text_color">@color/colorText</item>
-        <item name="material_dialog_positive_button_color">@color/colorAccent</item>
+        <item name="material_dialog_positive_button_color">@color/colorPrimaryDark</item>
         <item name="material_dialog_positive_button_text_color">@android:color/white</item>
-        <item name="material_dialog_negative_button_text_color">@color/colorAccent</item>
+        <item name="material_dialog_negative_button_text_color">@color/colorPrimaryDark</item>
     </style>
 
     <style name="EditTextAppearance" parent="Widget.AppCompat.EditText">
@@ -48,6 +48,17 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:fontFamily">@font/poppins</item>
         <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="NavigationTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
+    </style>
+
+    <style name="NavigationMenuTextStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/poppins</item>
     </style>
 
 </resources>

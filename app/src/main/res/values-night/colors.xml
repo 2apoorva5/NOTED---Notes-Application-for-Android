@@ -16,13 +16,23 @@
     <color name="colorNoteSubtitleText">#FDFDFD</color>
     <color name="colorMiscellaneousBackground">#0B0B0B</color>
     <color name="colorText">#FFFFFF</color>
-    <color name="colorNote2">#FFC845</color>
-    <color name="colorNote3">#4D8DFF</color>
-    <color name="colorNote4">#FF6060</color>
-    <color name="colorNote5">#4DFFAC</color>
-    <color name="colorNote6">#FF509C</color>
-    <color name="colorNote7">#11E7FF</color>
-    <color name="colorNote8">#FF8F44</color>
+    <color name="colorNote2">#FFB400</color>
+    <color name="colorNote3">#3B81FF</color>
+    <color name="colorNote4">#FF4E4E</color>
+    <color name="colorNote5">#13A662</color>
+    <color name="colorNote6">#FF388E</color>
+    <color name="colorNote7">#118E9C</color>
+    <color name="colorNote8">#FF822E</color>
     <color name="colorDelete">#FF4842</color>
     <color name="colorSearchBackground">#1C1C1C</color>
+
+    <color name="ucrop_color_toolbar">@color/colorBackground</color>
+    <color name="ucrop_color_statusbar">@color/colorBackground</color>
+    <color name="ucrop_color_widget_active">@color/colorPrimaryDark</color>
+    <color name="ucrop_color_toolbar_widget">@color/colorText</color>
+    <color name="ucrop_color_active_controls_color">@color/colorPrimaryDark</color>
+    <color name="ucrop_color_inactive_controls_color">@color/colorTextHint</color>
+    <color name="ucrop_color_widget_rotate_mid_line">@color/colorPrimaryDark</color>
+    <color name="ucrop_color_active_aspect_ratio">@color/colorPrimaryDark</color>
+    <color name="ucrop_color_widget_text">@color/colorText</color>
 </resources>
