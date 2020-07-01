@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context=".activities.MainActivity">
+    tools:context=".MainActivity">
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/main_navigation_menu"
@@ -18,7 +18,7 @@
         android:layout_gravity="right"
         app:menu="@menu/main_menu"
         app:headerLayout="@layout/layout_navigation_header"
-        app:itemIconTint="@color/colorIcons"
+        app:itemIconTint="@color/colorPrimaryDark"
         app:itemTextColor="@color/colorText"
         app:itemTextAppearance="@style/NavigationMenuTextStyle"/>
 

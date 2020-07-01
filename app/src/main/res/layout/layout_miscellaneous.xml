@@ -89,7 +89,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
             android:layout_marginStart="12dp"
-            android:src="@drawable/material_dialog_delete"
+            android:src="@drawable/ic_delete"
             android:scaleType="centerCrop"
             android:tint="@color/colorIcons"
             app:layout_constraintStart_toStartOf="parent"

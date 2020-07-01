@@ -1,6 +1,7 @@
-package com.developerdepository.noted.activities;
+package com.developerdepository.noted;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
@@ -12,6 +13,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.view.ActionMode;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -33,8 +35,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.bumptech.glide.Glide;
-import com.developerdepository.noted.R;
 import com.developerdepository.noted.adapters.NotesAdapter;
 import com.developerdepository.noted.database.NotesDatabase;
 import com.developerdepository.noted.entities.Note;
@@ -43,16 +43,17 @@ import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.shreyaspatil.MaterialDialog.MaterialDialog;
 import com.tapadoo.alerter.Alerter;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import hotchemi.android.rate.AppRate;
 import maes.tech.intentanim.CustomIntent;
 
 public class MainActivity extends AppCompatActivity implements NotesListener, NavigationView.OnNavigationItemSelectedListener {
@@ -80,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
     public static final int REQUEST_CODE_VOICE_NOTE = 6;
 
     private int noteClickedPosition = -1;
+    private androidx.appcompat.view.ActionMode actionMode;
 
     private AlertDialog dialogAddURL;
     private AlertDialog dialogAddImage;
@@ -92,6 +94,16 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
         setContentView(R.layout.activity_main);
 
         getWindow().setNavigationBarColor(ContextCompat.getColor(MainActivity.this, R.color.colorQuickActionsBackground));
+
+        AppRate.with(MainActivity.this)
+                .setInstallDays(1)
+                .setLaunchTimes(3)
+                .setRemindInterval(1)
+                .setShowLaterButton(true)
+                .setShowNeverButton(false)
+                .monitor();
+
+        AppRate.showRateDialogIfMeetsConditions(MainActivity.this);
 
         initViews();
         setNavigationMenu();
@@ -120,13 +132,6 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
             }
         });
 
-        notesRecyclerView.setLayoutManager(
-                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        );
-        noteList = new ArrayList<>();
-        notesAdapter = new NotesAdapter(noteList, this);
-        notesRecyclerView.setAdapter(notesAdapter);
-
         inputSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -146,6 +151,13 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
             }
         });
 
+        notesRecyclerView.setLayoutManager(
+                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        );
+        noteList = new ArrayList<>();
+        notesAdapter = new NotesAdapter(noteList, this);
+        notesRecyclerView.setAdapter(notesAdapter);
+
         bottomAppBar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.menu_add :
@@ -153,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                             new Intent(getApplicationContext(), CreateNoteActivity.class),
                             REQUEST_CODE_ADD_NOTE
                     );
-                    CustomIntent.customType(MainActivity.this, "bottom-to-up");
+                    CustomIntent.customType(MainActivity.this, "left-to-right");
                     inputSearch.setText(null);
                     break;
                 case R.id.menu_image :
@@ -174,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                     new Intent(getApplicationContext(), CreateNoteActivity.class),
                     REQUEST_CODE_ADD_NOTE
             );
-            CustomIntent.customType(MainActivity.this, "bottom-to-up");
+            CustomIntent.customType(MainActivity.this, "left-to-right");
             inputSearch.setText(null);
         });
     }
@@ -195,15 +207,60 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.nav_app_info :
+            case R.id.menu_add_note :
+                startActivityForResult(
+                        new Intent(getApplicationContext(), CreateNoteActivity.class),
+                        REQUEST_CODE_ADD_NOTE
+                );
+                CustomIntent.customType(MainActivity.this, "left-to-right");
+                inputSearch.setText(null);
                 break;
-            case R.id.nav_rate_noted :
+            case R.id.menu_add_image :
+                showAddImageDialog();
                 break;
-            case R.id.nav_share_noted :
+            case R.id.menu_add_voice :
+                voiceNote();
                 break;
-            case R.id.nav_more_apps :
+            case R.id.menu_add_url :
+                showAddURLDialog();
                 break;
-            case R.id.nav_privacy_policy :
+            case R.id.menu_app_info :
+                drawerLayout.closeDrawer(GravityCompat.END);
+                break;
+            case R.id.menu_rate_noted :
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("market://details?id=" + MainActivity.this.getPackageName())));
+                } catch (ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://play.google.com/store/apps/details?id=" + MainActivity.this.getPackageName())));
+                }
+                drawerLayout.closeDrawer(GravityCompat.END);
+                break;
+            case R.id.menu_share_noted :
+                Intent shareIntent =   new Intent(android.content.Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT,"NOTED - Don't Bother Remembering!");
+                String app_url = " https://play.google.com/store/apps/details?id=" + MainActivity.this.getPackageName();
+                shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, app_url);
+                startActivity(Intent.createChooser(shareIntent, "Share via"));
+                drawerLayout.closeDrawer(GravityCompat.END);
+                break;
+            case R.id.menu_more_apps :
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("market://developer?id=Developer+Depository")));
+                } catch (ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("https://play.google.com/store/apps/developer?id=Developer+Depository")));
+                }
+                drawerLayout.closeDrawer(GravityCompat.END);
+                break;
+            case R.id.menu_privacy_policy :
+                String privacyPolicyUrl = "https://developerdepository.wixsite.com/said-policies";
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(privacyPolicyUrl));
+                startActivity(browserIntent);
+                drawerLayout.closeDrawer(GravityCompat.END);
                 break;
         }
         return false;
@@ -233,8 +290,98 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
         intent.putExtra("isViewOrUpdate", true);
         intent.putExtra("note", note);
         startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTE);
-        CustomIntent.customType(MainActivity.this, "bottom-to-up");
+        CustomIntent.customType(MainActivity.this, "left-to-right");
         inputSearch.setText(null);
+    }
+
+    @Override
+    public void onNoteLongClicked(View view, Note note, int position) {
+        noteClickedPosition = position;
+        view.setForeground(getDrawable(R.drawable.background_selected_note));
+        if(actionMode != null) {
+            return;
+        }
+
+        actionMode = startSupportActionMode(new ActionMode.Callback() {
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                mode.getMenuInflater().inflate(R.menu.note_menu, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.note_menu_edit :
+                        Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
+                        intent.putExtra("isViewOrUpdate", true);
+                        intent.putExtra("note", note);
+                        startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTE);
+                        CustomIntent.customType(MainActivity.this, "left-to-right");
+                        inputSearch.setText(null);
+                        mode.finish();
+                        return true;
+                    case R.id.note_menu_delete :
+                        showDeleteNoteDialog(note);
+                        mode.finish();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                actionMode = null;
+                view.setForeground(null);
+            }
+        });
+    }
+
+    private void showDeleteNoteDialog(Note note) {
+        MaterialDialog materialDialog = new MaterialDialog.Builder(MainActivity.this)
+                .setTitle("Are you sure?")
+                .setMessage("Are you sure you want to delete this note?")
+                .setAnimation(R.raw.lottie_delete)
+                .setCancelable(false)
+                .setPositiveButton("Delete", R.drawable.material_dialog_delete, (dialogInterface, which) -> {
+                    @SuppressLint("StaticFieldLeak")
+                    class DeleteNoteTask extends AsyncTask<Void, Void, Void> {
+
+                        @Override
+                        protected Void doInBackground(Void... voids) {
+                            NotesDatabase.getDatabase(getApplicationContext()).noteDao()
+                                    .deleteNote(note);
+                            return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Void aVoid) {
+                            super.onPostExecute(aVoid);
+                            noteList.remove(noteClickedPosition);
+                            notesAdapter.notifyItemRemoved(noteClickedPosition);
+
+                            if(noteList.size() != 0) {
+                                imageEmpty.setVisibility(View.GONE);
+                                textEmpty.setVisibility(View.GONE);
+                            } else {
+                                imageEmpty.setVisibility(View.VISIBLE);
+                                textEmpty.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+
+                    new DeleteNoteTask().execute();
+                    dialogInterface.dismiss();
+                })
+                .setNegativeButton("Cancel", R.drawable.material_dialog_cancel, (dialogInterface, which) -> dialogInterface.dismiss())
+                .build();
+        materialDialog.show();
     }
 
     private void getNotes(final int requestCode, final boolean isNoteDeleted) {
@@ -255,10 +402,14 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                 if(requestCode == REQUEST_CODE_SHOW_NOTES) {
                     noteList.addAll(notes);
                     notesAdapter.notifyDataSetChanged();
+                    if(drawerLayout.isDrawerVisible(GravityCompat.END))
+                        drawerLayout.closeDrawer(GravityCompat.END);
                 } else if(requestCode == REQUEST_CODE_ADD_NOTE) {
                     noteList.add(0, notes.get(0));
                     notesAdapter.notifyItemInserted(0);
                     notesRecyclerView.smoothScrollToPosition(0);
+                    if(drawerLayout.isDrawerVisible(GravityCompat.END))
+                        drawerLayout.closeDrawer(GravityCompat.END);
                 } else if(requestCode == REQUEST_CODE_UPDATE_NOTE) {
                     noteList.remove(noteClickedPosition);
                     if(isNoteDeleted) {
@@ -267,6 +418,8 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                         noteList.add(noteClickedPosition, notes.get(noteClickedPosition));
                         notesAdapter.notifyItemChanged(noteClickedPosition);
                     }
+                    if(drawerLayout.isDrawerVisible(GravityCompat.END))
+                        drawerLayout.closeDrawer(GravityCompat.END);
                 }
 
                 if(noteList.size() != 0) {
@@ -372,7 +525,8 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                     intent.putExtra("quickActionType", "URL");
                     intent.putExtra("URL", inputURL.getText().toString().trim());
                     startActivityForResult(intent, REQUEST_CODE_ADD_NOTE);
-                    CustomIntent.customType(MainActivity.this, "bottom-to-up");
+                    CustomIntent.customType(MainActivity.this, "left-to-right");
+                    inputSearch.setText(null);
                 }
             });
 
@@ -413,7 +567,8 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                         intent.putExtra("quickActionType", "image");
                         intent.putExtra("imagePath", selectedImagePath);
                         startActivityForResult(intent, REQUEST_CODE_ADD_NOTE);
-                        CustomIntent.customType(MainActivity.this, "bottom-to-up");
+                        CustomIntent.customType(MainActivity.this, "left-to-right");
+                        inputSearch.setText(null);
                     } catch (Exception exception) {
                         Alerter.create(MainActivity.this)
                                 .setText("Some ERROR occurred!")
@@ -441,7 +596,8 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                         intent.putExtra("quickActionType", "image");
                         intent.putExtra("imagePath", selectedImagePath);
                         startActivityForResult(intent, REQUEST_CODE_ADD_NOTE);
-                        CustomIntent.customType(MainActivity.this, "bottom-to-up");
+                        CustomIntent.customType(MainActivity.this, "left-to-right");
+                        inputSearch.setText(null);
                     } catch (Exception exception) {
                         Alerter.create(MainActivity.this)
                                 .setText("Some ERROR occurred!")
@@ -466,18 +622,16 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                 intent.putExtra("quickActionType", "voiceNote");
                 intent.putExtra("inputText", voiceResult.get(0));
                 startActivityForResult(intent, REQUEST_CODE_ADD_NOTE);
-                CustomIntent.customType(MainActivity.this, "bottom-to-up");
+                CustomIntent.customType(MainActivity.this, "left-to-right");
+                inputSearch.setText(null);
             }
         }
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        if(drawerLayout.isDrawerVisible(GravityCompat.END)) {
+        if(drawerLayout.isDrawerVisible(GravityCompat.END))
             drawerLayout.closeDrawer(GravityCompat.END);
-        } else {
-            finishAffinity();
-        }
+        else finishAffinity();
     }
 }

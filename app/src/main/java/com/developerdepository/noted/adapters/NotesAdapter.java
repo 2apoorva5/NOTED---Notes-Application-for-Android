@@ -63,6 +63,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         holder.layoutNote.setOnClickListener(v -> {
             notesListener.onNoteClicked(notes.get(position), position);
         });
+        holder.layoutNote.setOnLongClickListener(v -> {
+            notesListener.onNoteLongClicked(holder.layoutNote, notes.get(position), position);
+            return true;
+        });
     }
 
     @Override

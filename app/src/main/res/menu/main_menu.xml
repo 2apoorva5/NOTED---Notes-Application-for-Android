@@ -4,39 +4,72 @@
     <group android:checkableBehavior="single">
 
         <item
-            android:id="@+id/nav_app_info"
-            android:title="App Info"
-            android:icon="@drawable/ic_menu_info"
-            android:iconTint="@color/colorIcons"
+            android:id="@+id/menu_add_note"
+            android:title="Add Note"
+            android:icon="@drawable/ic_add_outline"
+            android:iconTint="@color/colorPrimaryDark"
             android:orderInCategory="100"/>
 
         <item
-            android:id="@+id/nav_rate_noted"
-            android:title="Rate NOTED"
-            android:icon="@drawable/ic_menu_rate"
-            android:iconTint="@color/colorIcons"
+            android:id="@+id/menu_add_image"
+            android:title="Add Image"
+            android:icon="@drawable/ic_image"
+            android:iconTint="@color/colorPrimaryDark"
             android:orderInCategory="200"/>
 
         <item
-            android:id="@+id/nav_share_noted"
-            android:title="Share NOTED"
-            android:icon="@drawable/ic_menu_share"
-            android:iconTint="@color/colorIcons"
+            android:id="@+id/menu_add_voice"
+            android:title="Add Voice Note"
+            android:icon="@drawable/ic_voice"
+            android:iconTint="@color/colorPrimaryDark"
             android:orderInCategory="300"/>
 
         <item
-            android:id="@+id/nav_more_apps"
-            android:title="More Apps"
-            android:icon="@drawable/ic_menu_more"
-            android:iconTint="@color/colorIcons"
+            android:id="@+id/menu_add_url"
+            android:title="Add URL"
+            android:icon="@drawable/ic_web_link"
+            android:iconTint="@color/colorPrimaryDark"
             android:orderInCategory="400"/>
 
+    </group>
+
+
+    <group android:checkableBehavior="none">
+
         <item
-            android:id="@+id/nav_privacy_policy"
-            android:title="Privacy Policy"
+            android:id="@+id/menu_app_info"
+            android:icon="@drawable/ic_info"
+            android:iconTint="@color/colorPrimaryDark"
+            android:orderInCategory="600"
+            android:title="App Info" />
+
+        <item
+            android:id="@+id/menu_rate_noted"
+            android:icon="@drawable/ic_menu_rate"
+            android:iconTint="@color/colorPrimaryDark"
+            android:orderInCategory="700"
+            android:title="Rate NOTED" />
+
+        <item
+            android:id="@+id/menu_share_noted"
+            android:icon="@drawable/ic_menu_share"
+            android:iconTint="@color/colorPrimaryDark"
+            android:orderInCategory="800"
+            android:title="Share NOTED" />
+
+        <item
+            android:id="@+id/menu_more_apps"
+            android:icon="@drawable/ic_menu_more"
+            android:iconTint="@color/colorPrimaryDark"
+            android:orderInCategory="900"
+            android:title="More Apps" />
+
+        <item
+            android:id="@+id/menu_privacy_policy"
             android:icon="@drawable/ic_menu_policy"
-            android:iconTint="@color/colorIcons"
-            android:orderInCategory="500"/>
+            android:iconTint="@color/colorPrimaryDark"
+            android:orderInCategory="1000"
+            android:title="Privacy Policy" />
 
     </group>
 

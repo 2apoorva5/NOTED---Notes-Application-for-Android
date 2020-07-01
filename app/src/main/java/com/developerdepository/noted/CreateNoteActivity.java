@@ -1,10 +1,8 @@
-package com.developerdepository.noted.activities;
+package com.developerdepository.noted;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
@@ -22,11 +20,9 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,13 +30,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
-import com.developerdepository.noted.R;
 import com.developerdepository.noted.database.NotesDatabase;
 import com.developerdepository.noted.entities.Note;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.shreyaspatil.MaterialDialog.MaterialDialog;
-import com.shreyaspatil.MaterialDialog.interfaces.DialogInterface;
 import com.tapadoo.alerter.Alerter;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
@@ -60,6 +54,9 @@ public class CreateNoteActivity extends AppCompatActivity {
     private EditText inputNoteTitle, inputNoteSubtitle, inputNote;
     private ImageView imageNote;
     private TextView textDateTime, textUrl, textReadingNote;
+
+    private BottomSheetBehavior<ConstraintLayout> bottomSheetAddActions;
+    private BottomSheetBehavior<ConstraintLayout> bottomSheetMiscellaneous;
 
     private String selectedNoteColor;
     private String selectedImagePath;
@@ -260,13 +257,17 @@ public class CreateNoteActivity extends AppCompatActivity {
 
     private void initAddActions() {
         final ConstraintLayout layoutAddActions = findViewById(R.id.layout_add_actions);
-        final BottomSheetBehavior<ConstraintLayout> bottomSheetAddActions = BottomSheetBehavior.from(layoutAddActions);
+        bottomSheetAddActions = BottomSheetBehavior.from(layoutAddActions);
 
         addActionsBtn.setOnClickListener(v -> {
             if (bottomSheetAddActions.getState() != BottomSheetBehavior.STATE_EXPANDED) {
                 bottomSheetAddActions.setState(BottomSheetBehavior.STATE_EXPANDED);
             } else {
                 bottomSheetAddActions.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+
+            if (bottomSheetMiscellaneous.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                bottomSheetMiscellaneous.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         });
 
@@ -374,13 +375,17 @@ public class CreateNoteActivity extends AppCompatActivity {
 
     private void initMiscellaneous() {
         final ConstraintLayout layoutMiscellaneous = findViewById(R.id.layout_miscellaneous);
-        final BottomSheetBehavior<ConstraintLayout> bottomSheetMiscellaneous = BottomSheetBehavior.from(layoutMiscellaneous);
+        bottomSheetMiscellaneous = BottomSheetBehavior.from(layoutMiscellaneous);
 
         optionsMenu.setOnClickListener(v -> {
             if (bottomSheetMiscellaneous.getState() != BottomSheetBehavior.STATE_EXPANDED) {
                 bottomSheetMiscellaneous.setState(BottomSheetBehavior.STATE_EXPANDED);
             } else {
                 bottomSheetMiscellaneous.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+
+            if (bottomSheetAddActions.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                bottomSheetAddActions.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         });
 
@@ -735,11 +740,12 @@ public class CreateNoteActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finish();
     }
 
     @Override
     public void finish() {
         super.finish();
-        CustomIntent.customType(CreateNoteActivity.this, "up-to-bottom");
+        CustomIntent.customType(CreateNoteActivity.this, "right-to-left");
     }
 }
