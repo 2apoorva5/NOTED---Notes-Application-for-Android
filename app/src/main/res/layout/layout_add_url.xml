@@ -11,8 +11,8 @@
 
     <ImageView
         android:id="@+id/image_url"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginTop="20dp"
         android:layout_marginStart="12dp"
         android:src="@drawable/ic_web_link"
@@ -71,7 +71,7 @@
         android:id="@+id/dialog_add_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="12dp"
         android:fontFamily="@font/poppins"
         android:includeFontPadding="false"
@@ -82,6 +82,9 @@
         android:textSize="16sp"
         android:textStyle="bold"
         android:padding="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_url"
         app:layout_constraintEnd_toEndOf="@+id/input_url"/>
@@ -90,7 +93,7 @@
         android:id="@+id/dialog_cancel_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="12dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/poppins"
@@ -102,6 +105,9 @@
         android:textSize="16sp"
         android:textStyle="bold"
         android:padding="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_url"
         app:layout_constraintEnd_toStartOf="@+id/dialog_add_btn"/>

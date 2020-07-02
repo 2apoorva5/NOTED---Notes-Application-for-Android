@@ -1,16 +1,25 @@
 package com.developerdepository.noted;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityOptions;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.util.Pair;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -43,6 +52,14 @@ import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.InstallState;
+import com.google.android.play.core.install.InstallStateUpdatedListener;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.InstallStatus;
+import com.google.android.play.core.install.model.UpdateAvailability;
 import com.shreyaspatil.MaterialDialog.MaterialDialog;
 import com.tapadoo.alerter.Alerter;
 
@@ -52,9 +69,10 @@ import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 import hotchemi.android.rate.AppRate;
 import maes.tech.intentanim.CustomIntent;
+
+import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity implements NotesListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -87,6 +105,10 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
     private AlertDialog dialogAddImage;
 
     private static final float END_SCALE = 0.8f;
+
+    private AppUpdateManager mAppUpdateManager;
+    private InstallStateUpdatedListener installStateUpdatedListener;
+    private int RC_APP_UPDATE = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,9 +173,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
             }
         });
 
-        notesRecyclerView.setLayoutManager(
-                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        );
+        notesRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         noteList = new ArrayList<>();
         notesAdapter = new NotesAdapter(noteList, this);
         notesRecyclerView.setAdapter(notesAdapter);
@@ -161,17 +181,18 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
         bottomAppBar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.menu_add :
-                    startActivityForResult(
-                            new Intent(getApplicationContext(), CreateNoteActivity.class),
-                            REQUEST_CODE_ADD_NOTE
-                    );
+                    UIUtil.hideKeyboard(MainActivity.this);
+                    Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE_ADD_NOTE);
                     CustomIntent.customType(MainActivity.this, "left-to-right");
                     inputSearch.setText(null);
                     break;
                 case R.id.menu_image :
+                    UIUtil.hideKeyboard(MainActivity.this);
                     showAddImageDialog();
                     break;
                 case R.id.menu_voice :
+                    UIUtil.hideKeyboard(MainActivity.this);
                     voiceNote();
                     break;
                 case R.id.menu_web_link :
@@ -182,10 +203,9 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
         });
 
         addNoteFloatingBtn.setOnClickListener(v -> {
-            startActivityForResult(
-                    new Intent(getApplicationContext(), CreateNoteActivity.class),
-                    REQUEST_CODE_ADD_NOTE
-            );
+            UIUtil.hideKeyboard(MainActivity.this);
+            Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
+            startActivityForResult(intent, REQUEST_CODE_ADD_NOTE);
             CustomIntent.customType(MainActivity.this, "left-to-right");
             inputSearch.setText(null);
         });
@@ -196,6 +216,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
         navigationView.setNavigationItemSelectedListener(MainActivity.this);
 
         navigationMenu.setOnClickListener(v -> {
+            UIUtil.hideKeyboard(MainActivity.this);
             if(drawerLayout.isDrawerVisible(GravityCompat.END))
                 drawerLayout.closeDrawer(GravityCompat.END);
             else drawerLayout.openDrawer(GravityCompat.END);
@@ -208,10 +229,8 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_add_note :
-                startActivityForResult(
-                        new Intent(getApplicationContext(), CreateNoteActivity.class),
-                        REQUEST_CODE_ADD_NOTE
-                );
+                Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_ADD_NOTE);
                 CustomIntent.customType(MainActivity.this, "left-to-right");
                 inputSearch.setText(null);
                 break;
@@ -225,39 +244,46 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                 showAddURLDialog();
                 break;
             case R.id.menu_app_info :
-                drawerLayout.closeDrawer(GravityCompat.END);
+                startActivity(new Intent(MainActivity.this, AppInfoActivity.class));
+                CustomIntent.customType(MainActivity.this, "bottom-to-up");
                 break;
             case R.id.menu_rate_noted :
                 try {
+                    inputSearch.setText(null);
                     startActivity(new Intent(Intent.ACTION_VIEW,
                             Uri.parse("market://details?id=" + MainActivity.this.getPackageName())));
                 } catch (ActivityNotFoundException e) {
+                    inputSearch.setText(null);
                     startActivity(new Intent(Intent.ACTION_VIEW,
                             Uri.parse("http://play.google.com/store/apps/details?id=" + MainActivity.this.getPackageName())));
                 }
                 drawerLayout.closeDrawer(GravityCompat.END);
                 break;
             case R.id.menu_share_noted :
+                inputSearch.setText(null);
                 Intent shareIntent =   new Intent(android.content.Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT,"NOTED - Don't Bother Remembering!");
-                String app_url = " https://play.google.com/store/apps/details?id=" + MainActivity.this.getPackageName();
+                String app_url = "https://play.google.com/store/apps/details?id=" + MainActivity.this.getPackageName();
                 shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, app_url);
                 startActivity(Intent.createChooser(shareIntent, "Share via"));
                 drawerLayout.closeDrawer(GravityCompat.END);
                 break;
             case R.id.menu_more_apps :
                 try {
+                    inputSearch.setText(null);
                     startActivity(new Intent(Intent.ACTION_VIEW,
                             Uri.parse("market://developer?id=Developer+Depository")));
                 } catch (ActivityNotFoundException e) {
+                    inputSearch.setText(null);
                     startActivity(new Intent(Intent.ACTION_VIEW,
                             Uri.parse("https://play.google.com/store/apps/developer?id=Developer+Depository")));
                 }
                 drawerLayout.closeDrawer(GravityCompat.END);
                 break;
             case R.id.menu_privacy_policy :
-                String privacyPolicyUrl = "https://developerdepository.wixsite.com/said-policies";
+                inputSearch.setText(null);
+                String privacyPolicyUrl = "https://developerdepository.wixsite.com/noted-policies";
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(privacyPolicyUrl));
                 startActivity(browserIntent);
                 drawerLayout.closeDrawer(GravityCompat.END);
@@ -281,158 +307,6 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                 contentView.setTranslationX(xTranslation);
             }
         });
-    }
-
-    @Override
-    public void onNoteClicked(Note note, int position) {
-        noteClickedPosition = position;
-        Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
-        intent.putExtra("isViewOrUpdate", true);
-        intent.putExtra("note", note);
-        startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTE);
-        CustomIntent.customType(MainActivity.this, "left-to-right");
-        inputSearch.setText(null);
-    }
-
-    @Override
-    public void onNoteLongClicked(View view, Note note, int position) {
-        noteClickedPosition = position;
-        view.setForeground(getDrawable(R.drawable.background_selected_note));
-        if(actionMode != null) {
-            return;
-        }
-
-        actionMode = startSupportActionMode(new ActionMode.Callback() {
-            @Override
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                mode.getMenuInflater().inflate(R.menu.note_menu, menu);
-                return true;
-            }
-
-            @Override
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            @Override
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.note_menu_edit :
-                        Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
-                        intent.putExtra("isViewOrUpdate", true);
-                        intent.putExtra("note", note);
-                        startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTE);
-                        CustomIntent.customType(MainActivity.this, "left-to-right");
-                        inputSearch.setText(null);
-                        mode.finish();
-                        return true;
-                    case R.id.note_menu_delete :
-                        showDeleteNoteDialog(note);
-                        mode.finish();
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-
-            @Override
-            public void onDestroyActionMode(ActionMode mode) {
-                actionMode = null;
-                view.setForeground(null);
-            }
-        });
-    }
-
-    private void showDeleteNoteDialog(Note note) {
-        MaterialDialog materialDialog = new MaterialDialog.Builder(MainActivity.this)
-                .setTitle("Are you sure?")
-                .setMessage("Are you sure you want to delete this note?")
-                .setAnimation(R.raw.lottie_delete)
-                .setCancelable(false)
-                .setPositiveButton("Delete", R.drawable.material_dialog_delete, (dialogInterface, which) -> {
-                    @SuppressLint("StaticFieldLeak")
-                    class DeleteNoteTask extends AsyncTask<Void, Void, Void> {
-
-                        @Override
-                        protected Void doInBackground(Void... voids) {
-                            NotesDatabase.getDatabase(getApplicationContext()).noteDao()
-                                    .deleteNote(note);
-                            return null;
-                        }
-
-                        @Override
-                        protected void onPostExecute(Void aVoid) {
-                            super.onPostExecute(aVoid);
-                            noteList.remove(noteClickedPosition);
-                            notesAdapter.notifyItemRemoved(noteClickedPosition);
-
-                            if(noteList.size() != 0) {
-                                imageEmpty.setVisibility(View.GONE);
-                                textEmpty.setVisibility(View.GONE);
-                            } else {
-                                imageEmpty.setVisibility(View.VISIBLE);
-                                textEmpty.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    }
-
-                    new DeleteNoteTask().execute();
-                    dialogInterface.dismiss();
-                })
-                .setNegativeButton("Cancel", R.drawable.material_dialog_cancel, (dialogInterface, which) -> dialogInterface.dismiss())
-                .build();
-        materialDialog.show();
-    }
-
-    private void getNotes(final int requestCode, final boolean isNoteDeleted) {
-
-        @SuppressLint("StaticFieldLeak")
-        class GetNotesTask extends AsyncTask<Void, Void, List<Note>> {
-
-            @Override
-            protected List<Note> doInBackground(Void... voids) {
-                return NotesDatabase
-                        .getDatabase(getApplicationContext())
-                        .noteDao().getAllNotes();
-            }
-
-            @Override
-            protected void onPostExecute(List<Note> notes) {
-                super.onPostExecute(notes);
-                if(requestCode == REQUEST_CODE_SHOW_NOTES) {
-                    noteList.addAll(notes);
-                    notesAdapter.notifyDataSetChanged();
-                    if(drawerLayout.isDrawerVisible(GravityCompat.END))
-                        drawerLayout.closeDrawer(GravityCompat.END);
-                } else if(requestCode == REQUEST_CODE_ADD_NOTE) {
-                    noteList.add(0, notes.get(0));
-                    notesAdapter.notifyItemInserted(0);
-                    notesRecyclerView.smoothScrollToPosition(0);
-                    if(drawerLayout.isDrawerVisible(GravityCompat.END))
-                        drawerLayout.closeDrawer(GravityCompat.END);
-                } else if(requestCode == REQUEST_CODE_UPDATE_NOTE) {
-                    noteList.remove(noteClickedPosition);
-                    if(isNoteDeleted) {
-                        notesAdapter.notifyItemRemoved(noteClickedPosition);
-                    } else {
-                        noteList.add(noteClickedPosition, notes.get(noteClickedPosition));
-                        notesAdapter.notifyItemChanged(noteClickedPosition);
-                    }
-                    if(drawerLayout.isDrawerVisible(GravityCompat.END))
-                        drawerLayout.closeDrawer(GravityCompat.END);
-                }
-
-                if(noteList.size() != 0) {
-                    imageEmpty.setVisibility(View.GONE);
-                    textEmpty.setVisibility(View.GONE);
-                } else {
-                    imageEmpty.setVisibility(View.VISIBLE);
-                    textEmpty.setVisibility(View.VISIBLE);
-                }
-            }
-        }
-
-        new GetNotesTask().execute();
     }
 
     private void showAddImageDialog() {
@@ -495,6 +369,14 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
         return filePath;
     }
 
+    private void voiceNote() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak something to add note!");
+        startActivityForResult(intent, REQUEST_CODE_VOICE_NOTE);
+    }
+
     private void showAddURLDialog() {
         if(dialogAddURL == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -539,12 +421,235 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
         dialogAddURL.show();
     }
 
-    private void voiceNote() {
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak something to add note!");
-        startActivityForResult(intent, REQUEST_CODE_VOICE_NOTE);
+    private void getNotes(final int requestCode, final boolean isNoteDeleted) {
+
+        @SuppressLint("StaticFieldLeak")
+        class GetNotesTask extends AsyncTask<Void, Void, List<Note>> {
+
+            @Override
+            protected List<Note> doInBackground(Void... voids) {
+                return NotesDatabase
+                        .getDatabase(getApplicationContext())
+                        .noteDao().getAllNotes();
+            }
+
+            @Override
+            protected void onPostExecute(List<Note> notes) {
+                super.onPostExecute(notes);
+                if(requestCode == REQUEST_CODE_SHOW_NOTES) {
+                    noteList.addAll(notes);
+                    notesAdapter.notifyDataSetChanged();
+                    if(drawerLayout.isDrawerVisible(GravityCompat.END))
+                        drawerLayout.closeDrawer(GravityCompat.END);
+                } else if(requestCode == REQUEST_CODE_ADD_NOTE) {
+                    noteList.add(0, notes.get(0));
+                    notesAdapter.notifyItemInserted(0);
+                    notesRecyclerView.smoothScrollToPosition(0);
+                    if(drawerLayout.isDrawerVisible(GravityCompat.END))
+                        drawerLayout.closeDrawer(GravityCompat.END);
+                } else if(requestCode == REQUEST_CODE_UPDATE_NOTE) {
+                    noteList.remove(noteClickedPosition);
+                    if(isNoteDeleted) {
+                        notesAdapter.notifyItemRemoved(noteClickedPosition);
+                    } else {
+                        noteList.add(noteClickedPosition, notes.get(noteClickedPosition));
+                        notesAdapter.notifyItemChanged(noteClickedPosition);
+                    }
+                    if(drawerLayout.isDrawerVisible(GravityCompat.END))
+                        drawerLayout.closeDrawer(GravityCompat.END);
+                }
+
+                if(noteList.size() != 0) {
+                    imageEmpty.setVisibility(View.GONE);
+                    textEmpty.setVisibility(View.GONE);
+                } else {
+                    imageEmpty.setVisibility(View.VISIBLE);
+                    textEmpty.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+
+        new GetNotesTask().execute();
+    }
+
+    @Override
+    public void onNoteClicked(View view, Note note, int position) {
+        noteClickedPosition = position;
+        Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
+        intent.putExtra("isViewOrUpdate", true);
+        intent.putExtra("note", note);
+        startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTE);
+        CustomIntent.customType(MainActivity.this, "left-to-right");
+        inputSearch.setText(null);
+    }
+
+    @Override
+    public void onNoteLongClicked(View view, Note note, int position) {
+        noteClickedPosition = position;
+        view.setForeground(getDrawable(R.drawable.background_selected_note));
+        if(actionMode != null) {
+            return;
+        }
+
+        actionMode = startSupportActionMode(new ActionMode.Callback() {
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                mode.getMenuInflater().inflate(R.menu.note_menu, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.note_menu_edit :
+                        Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
+                        intent.putExtra("isViewOrUpdate", true);
+                        intent.putExtra("note", note);
+                        startActivityForResult(intent, REQUEST_CODE_UPDATE_NOTE);
+                        CustomIntent.customType(MainActivity.this, "left-to-right");
+                        inputSearch.setText(null);
+                        mode.finish();
+                        return true;
+                    case R.id.note_menu_share :
+                        if(note.getImagePath() == null) {
+                            String content = note.getTitle() + "\n\n" + note.getSubtitle() + "\n\n" + note.getNoteText();
+                            Intent shareIntent =   new Intent(android.content.Intent.ACTION_SEND);
+                            shareIntent.setType("text/plain");
+                            shareIntent.putExtra(Intent.EXTRA_SUBJECT,note.getTitle());
+                            shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, content);
+                            startActivity(Intent.createChooser(shareIntent, "Share via"));
+                        } else {
+                            String textContent = note.getTitle() + "\n\n" + note.getSubtitle() + "\n\n" + note.getNoteText();
+                            Bitmap bitmap = BitmapFactory.decodeFile(note.getImagePath());
+                            String bitmapPath = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "title", null);
+                            Uri bitmapUri = Uri.parse(bitmapPath);
+                            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                            shareIntent.setType("image/png");
+                            shareIntent.putExtra(Intent.EXTRA_STREAM, bitmapUri);
+                            shareIntent.putExtra(Intent.EXTRA_TEXT, textContent);
+                            startActivity(Intent.createChooser(shareIntent, "Share"));
+                        }
+                        mode.finish();
+                        return true;
+                    case R.id.note_menu_delete :
+                        showDeleteNoteDialog(note);
+                        mode.finish();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                actionMode = null;
+                view.setForeground(null);
+            }
+        });
+    }
+
+    private void showDeleteNoteDialog(Note note) {
+        MaterialDialog materialDialog = new MaterialDialog.Builder(MainActivity.this)
+                .setTitle("Are you sure?")
+                .setMessage("Are you sure you want to delete this note?")
+                .setAnimation(R.raw.lottie_delete)
+                .setCancelable(false)
+                .setPositiveButton("Delete", R.drawable.material_dialog_delete, (dialogInterface, which) -> {
+                    @SuppressLint("StaticFieldLeak")
+                    class DeleteNoteTask extends AsyncTask<Void, Void, Void> {
+
+                        @Override
+                        protected Void doInBackground(Void... voids) {
+                            NotesDatabase.getDatabase(getApplicationContext()).noteDao()
+                                    .deleteNote(note);
+                            return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Void aVoid) {
+                            super.onPostExecute(aVoid);
+                            noteList.remove(noteClickedPosition);
+                            notesAdapter.notifyItemRemoved(noteClickedPosition);
+
+                            if(noteList.size() != 0) {
+                                imageEmpty.setVisibility(View.GONE);
+                                textEmpty.setVisibility(View.GONE);
+                            } else {
+                                imageEmpty.setVisibility(View.VISIBLE);
+                                textEmpty.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+
+                    new DeleteNoteTask().execute();
+                    dialogInterface.dismiss();
+                })
+                .setNegativeButton("Cancel", R.drawable.material_dialog_cancel, (dialogInterface, which) -> dialogInterface.dismiss())
+                .build();
+        materialDialog.show();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        mAppUpdateManager = AppUpdateManagerFactory.create(MainActivity.this);
+
+        installStateUpdatedListener = state -> {
+            if (state.installStatus() == InstallStatus.DOWNLOADED){
+                popupSnackbarForCompleteUpdate();
+            } else if (state.installStatus() == InstallStatus.INSTALLED){
+                if (mAppUpdateManager != null){
+                    mAppUpdateManager.unregisterListener(installStateUpdatedListener);
+                }
+
+            } else {
+                Log.i(TAG, "InstallStateUpdatedListener: state: " + state.installStatus());
+            }
+        };
+
+        mAppUpdateManager.registerListener(installStateUpdatedListener);
+
+        mAppUpdateManager.getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
+
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
+
+                try {
+                    mAppUpdateManager.startUpdateFlowForResult(appUpdateInfo, AppUpdateType.FLEXIBLE, MainActivity.this, RC_APP_UPDATE);
+                } catch (IntentSender.SendIntentException e) {
+                    e.printStackTrace();
+                }
+
+            } else if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                popupSnackbarForCompleteUpdate();
+            } else {
+                Log.e(TAG, "checkForAppUpdateAvailability: something else");
+            }
+        });
+    }
+
+    private void popupSnackbarForCompleteUpdate() {
+
+        Snackbar snackbar =
+                Snackbar.make(
+                        MainActivity.this.findViewById(R.id.bottom_bar_container_layout),
+                        "New update is ready!",
+                        Snackbar.LENGTH_INDEFINITE);
+
+        snackbar.setAction("Install", view -> {
+            if (mAppUpdateManager != null){
+                mAppUpdateManager.completeUpdate();
+            }
+        });
+
+        snackbar.setActionTextColor(getResources().getColor(R.color.colorPrimary));
+        snackbar.show();
     }
 
     @Override
@@ -625,6 +730,26 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                 CustomIntent.customType(MainActivity.this, "left-to-right");
                 inputSearch.setText(null);
             }
+        } else if (requestCode == RC_APP_UPDATE) {
+            if (resultCode != RESULT_OK) {
+                Toast.makeText(MainActivity.this, "App Update Failed!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mAppUpdateManager != null) {
+            mAppUpdateManager.unregisterListener(installStateUpdatedListener);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mAppUpdateManager != null) {
+            mAppUpdateManager.unregisterListener(installStateUpdatedListener);
         }
     }
 

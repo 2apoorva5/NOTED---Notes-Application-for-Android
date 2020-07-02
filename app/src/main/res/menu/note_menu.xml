@@ -10,6 +10,13 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/note_menu_share"
+        android:title="Share"
+        android:icon="@drawable/ic_menu_share"
+        android:iconTint="@color/colorIcons"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/note_menu_delete"
         android:title="Delete"
         android:icon="@drawable/ic_delete"

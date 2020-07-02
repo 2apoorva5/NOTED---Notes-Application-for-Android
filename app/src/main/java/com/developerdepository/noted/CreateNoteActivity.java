@@ -3,14 +3,18 @@ package com.developerdepository.noted;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.Voice;
 import android.text.InputType;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -168,7 +172,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         inputNoteTitle.setText(alreadyAvailableNote.getTitle());
         inputNoteSubtitle.setText(alreadyAvailableNote.getSubtitle());
         inputNote.setText(alreadyAvailableNote.getNoteText());
-        textDateTime.setText(alreadyAvailableNote.getDateTime());
+        textDateTime.setText(String.format("Edited %s", new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm a", Locale.getDefault()).format(new Date())));
         if(alreadyAvailableNote.getImagePath() != null && !alreadyAvailableNote.getImagePath().trim().isEmpty()) {
             Glide.with(imageNote.getContext()).load(alreadyAvailableNote.getImagePath()).centerCrop().into(imageNote);
             imageNote.setVisibility(View.VISIBLE);
@@ -188,9 +192,9 @@ public class CreateNoteActivity extends AppCompatActivity {
         if (inputNoteTitle.getText().toString().trim().isEmpty()) {
             Alerter.create(CreateNoteActivity.this)
                     .setText("Note Title can't be kept empty!")
-                    .setTextAppearance(R.style.InfoAlert)
-                    .setBackgroundColorRes(R.color.infoColor)
-                    .setIcon(R.drawable.ic_info)
+                    .setTextAppearance(R.style.ErrorAlert)
+                    .setBackgroundColorRes(R.color.errorColor)
+                    .setIcon(R.drawable.ic_error)
                     .setDuration(3000)
                     .enableIconPulse(true)
                     .enableVibration(true)
@@ -202,9 +206,9 @@ public class CreateNoteActivity extends AppCompatActivity {
         } else if (inputNoteSubtitle.getText().toString().trim().isEmpty() && inputNote.getText().toString().trim().isEmpty()) {
             Alerter.create(CreateNoteActivity.this)
                     .setText("Note can't be kept empty!")
-                    .setTextAppearance(R.style.InfoAlert)
-                    .setBackgroundColorRes(R.color.infoColor)
-                    .setIcon(R.drawable.ic_info)
+                    .setTextAppearance(R.style.ErrorAlert)
+                    .setBackgroundColorRes(R.color.errorColor)
+                    .setIcon(R.drawable.ic_error)
                     .setDuration(3000)
                     .enableIconPulse(true)
                     .enableVibration(true)
@@ -272,16 +276,19 @@ public class CreateNoteActivity extends AppCompatActivity {
         });
 
         layoutAddActions.findViewById(R.id.layout_take_photo).setOnClickListener(v -> {
+            UIUtil.hideKeyboard(CreateNoteActivity.this);
             bottomSheetAddActions.setState(BottomSheetBehavior.STATE_COLLAPSED);
             takePhoto();
         });
 
         layoutAddActions.findViewById(R.id.layout_add_image).setOnClickListener(v -> {
+            UIUtil.hideKeyboard(CreateNoteActivity.this);
             bottomSheetAddActions.setState(BottomSheetBehavior.STATE_COLLAPSED);
             selectImage();
         });
 
         layoutAddActions.findViewById(R.id.layout_voice_note).setOnClickListener(v -> {
+            UIUtil.hideKeyboard(CreateNoteActivity.this);
             bottomSheetAddActions.setState(BottomSheetBehavior.STATE_COLLAPSED);
             voiceNote();
         });
@@ -310,14 +317,6 @@ public class CreateNoteActivity extends AppCompatActivity {
                 .start(REQUEST_CODE_SELECT_IMAGE);
     }
 
-    private void voiceNote() {
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak something to add note!");
-        startActivityForResult(intent, REQUEST_CODE_VOICE_NOTE);
-    }
-
     private String getPathFromUri(Uri contentUri) {
         String filePath;
         Cursor cursor = getContentResolver()
@@ -331,6 +330,14 @@ public class CreateNoteActivity extends AppCompatActivity {
             cursor.close();
         }
         return filePath;
+    }
+
+    private void voiceNote() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak something to add note!");
+        startActivityForResult(intent, REQUEST_CODE_VOICE_NOTE);
     }
 
     private void showAddURLDialog() {
@@ -399,6 +406,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         final ImageView checkColor8 = layoutMiscellaneous.findViewById(R.id.check_color8);
 
         layoutMiscellaneous.findViewById(R.id.view_color1).setOnClickListener(v -> {
+            UIUtil.hideKeyboard(CreateNoteActivity.this);
             selectedNoteColor = "#" + Integer.toHexString(ContextCompat.getColor(getApplicationContext(), R.color.colorDefaultNoteColor) & 0x00ffffff);
             checkColor1.setImageResource(R.drawable.ic_check);
             checkColor2.setImageResource(0);
@@ -412,6 +420,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         });
 
         layoutMiscellaneous.findViewById(R.id.view_color2).setOnClickListener(v -> {
+            UIUtil.hideKeyboard(CreateNoteActivity.this);
             selectedNoteColor = "#FFB400";
             checkColor1.setImageResource(0);
             checkColor2.setImageResource(R.drawable.ic_check);
@@ -425,6 +434,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         });
 
         layoutMiscellaneous.findViewById(R.id.view_color3).setOnClickListener(v -> {
+            UIUtil.hideKeyboard(CreateNoteActivity.this);
             selectedNoteColor = "#3B81FF";
             checkColor1.setImageResource(0);
             checkColor2.setImageResource(0);
@@ -438,6 +448,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         });
 
         layoutMiscellaneous.findViewById(R.id.view_color4).setOnClickListener(v -> {
+            UIUtil.hideKeyboard(CreateNoteActivity.this);
             selectedNoteColor = "#FF4E4E";
             checkColor1.setImageResource(0);
             checkColor2.setImageResource(0);
@@ -451,6 +462,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         });
 
         layoutMiscellaneous.findViewById(R.id.view_color5).setOnClickListener(v -> {
+            UIUtil.hideKeyboard(CreateNoteActivity.this);
             selectedNoteColor = "#13A662";
             checkColor1.setImageResource(0);
             checkColor2.setImageResource(0);
@@ -464,6 +476,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         });
 
         layoutMiscellaneous.findViewById(R.id.view_color6).setOnClickListener(v -> {
+            UIUtil.hideKeyboard(CreateNoteActivity.this);
             selectedNoteColor = "#FF388E";
             checkColor1.setImageResource(0);
             checkColor2.setImageResource(0);
@@ -477,6 +490,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         });
 
         layoutMiscellaneous.findViewById(R.id.view_color7).setOnClickListener(v -> {
+            UIUtil.hideKeyboard(CreateNoteActivity.this);
             selectedNoteColor = "#118E9C";
             checkColor1.setImageResource(0);
             checkColor2.setImageResource(0);
@@ -490,6 +504,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         });
 
         layoutMiscellaneous.findViewById(R.id.view_color8).setOnClickListener(v -> {
+            UIUtil.hideKeyboard(CreateNoteActivity.this);
             selectedNoteColor = "#FF822E";
             checkColor1.setImageResource(0);
             checkColor2.setImageResource(0);
@@ -520,33 +535,140 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         }
 
+        layoutMiscellaneous.findViewById(R.id.layout_read_note).setOnClickListener(v -> {
+            if (inputNoteTitle.getText().toString().trim().isEmpty() &&
+                    inputNoteSubtitle.getText().toString().trim().isEmpty() &&
+                    inputNote.getText().toString().trim().isEmpty()) {
+                UIUtil.hideKeyboard(CreateNoteActivity.this);
+                bottomSheetMiscellaneous.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                Alerter.create(CreateNoteActivity.this)
+                        .setText("Whoops! There's nothing to read!")
+                        .setTextAppearance(R.style.ErrorAlert)
+                        .setBackgroundColorRes(R.color.errorColor)
+                        .setIcon(R.drawable.ic_error)
+                        .setDuration(3000)
+                        .enableIconPulse(true)
+                        .enableVibration(true)
+                        .disableOutsideTouch()
+                        .enableProgress(true)
+                        .setProgressColorInt(getResources().getColor(android.R.color.white))
+                        .show();
+                return;
+            } else {
+                textToSpeech = new TextToSpeech(CreateNoteActivity.this, status -> {
+                    if(status == TextToSpeech.SUCCESS) {
+                        int result = textToSpeech.setLanguage(Locale.ENGLISH);
+
+                        if(result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                            bottomSheetMiscellaneous.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                            Toast.makeText(CreateNoteActivity.this, "Sorry, language not supported!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            UIUtil.hideKeyboard(CreateNoteActivity.this);
+                            bottomSheetMiscellaneous.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                            showDialogReadingNote();
+                        }
+                    } else {
+                        bottomSheetMiscellaneous.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        Toast.makeText(CreateNoteActivity.this, "Initialization Failed!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+        layoutMiscellaneous.findViewById(R.id.layout_share_note).setOnClickListener(v -> {
+            if (inputNoteTitle.getText().toString().trim().isEmpty() &&
+                    inputNoteSubtitle.getText().toString().trim().isEmpty() &&
+                    inputNote.getText().toString().trim().isEmpty() &&
+                    textUrl.getVisibility() == View.GONE &&
+                    imageNote.getVisibility() == View.GONE) {
+                UIUtil.hideKeyboard(CreateNoteActivity.this);
+                bottomSheetMiscellaneous.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                Alerter.create(CreateNoteActivity.this)
+                        .setText("Whoops! There's nothing to share!")
+                        .setTextAppearance(R.style.ErrorAlert)
+                        .setBackgroundColorRes(R.color.errorColor)
+                        .setIcon(R.drawable.ic_error)
+                        .setDuration(3000)
+                        .enableIconPulse(true)
+                        .enableVibration(true)
+                        .disableOutsideTouch()
+                        .enableProgress(true)
+                        .setProgressColorInt(getResources().getColor(android.R.color.white))
+                        .show();
+                return;
+            } else if(imageNote.getVisibility() == View.GONE) {
+                UIUtil.hideKeyboard(CreateNoteActivity.this);
+                String content = inputNoteTitle.getText().toString().trim() + "\n\n" +
+                        inputNoteSubtitle.getText().toString().trim() + "\n\n" +
+                        inputNote.getText().toString().trim();
+                Intent shareIntent =   new Intent(android.content.Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT,inputNoteTitle.getText().toString().trim());
+                shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, content);
+                startActivity(Intent.createChooser(shareIntent, "Share via"));
+            } else {
+                UIUtil.hideKeyboard(CreateNoteActivity.this);
+                String textContent = inputNoteTitle.getText().toString().trim() + "\n\n" +
+                        inputNoteSubtitle.getText().toString().trim() + "\n\n" +
+                        inputNote.getText().toString().trim();
+                Bitmap bitmap = BitmapFactory.decodeFile(selectedImagePath);
+                String bitmapPath = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "title", null);
+                Uri bitmapUri = Uri.parse(bitmapPath);
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("image/png");
+                shareIntent.putExtra(Intent.EXTRA_STREAM, bitmapUri);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, textContent);
+                startActivity(Intent.createChooser(shareIntent, "Share"));
+            }
+        });
+
         if(alreadyAvailableNote != null) {
             layoutMiscellaneous.findViewById(R.id.layout_delete_note).setVisibility(View.VISIBLE);
             layoutMiscellaneous.findViewById(R.id.layout_delete_note).setOnClickListener(v -> {
+                UIUtil.hideKeyboard(CreateNoteActivity.this);
                 bottomSheetMiscellaneous.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 showDeleteNoteDialog();
             });
         }
+    }
 
-        if(!inputNoteTitle.getText().toString().trim().isEmpty() && !inputNoteSubtitle.getText().toString().trim().isEmpty()) {
-            layoutMiscellaneous.findViewById(R.id.layout_read_note).setVisibility(View.VISIBLE);
-            layoutMiscellaneous.findViewById(R.id.layout_read_note).setOnClickListener(v -> textToSpeech = new TextToSpeech(CreateNoteActivity.this, status -> {
-                if(status == TextToSpeech.SUCCESS) {
-                    int result = textToSpeech.setLanguage(Locale.ENGLISH);
+    private void showDialogReadingNote() {
+        if(dialogReadingNote == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(CreateNoteActivity.this);
+            View view = LayoutInflater.from(this).inflate(
+                    R.layout.layout_reading_note,
+                    (ViewGroup) findViewById(R.id.layout_reading_note_container)
+            );
+            builder.setView(view);
 
-                    if(result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                        Toast.makeText(CreateNoteActivity.this, "Sorry, language not supported!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        bottomSheetMiscellaneous.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                        showDialogReadingNote();
-                    }
-                } else {
-                    Toast.makeText(CreateNoteActivity.this, "Initialization Failed!", Toast.LENGTH_SHORT).show();
+            dialogReadingNote = builder.create();
+            if(dialogReadingNote.getWindow() != null) {
+                dialogReadingNote.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            }
+
+            textReadingNote = view.findViewById(R.id.text_reading_text);
+
+            String textToRead1 = inputNoteTitle.getText().toString().trim();
+            String textToRead2 = inputNoteSubtitle.getText().toString().trim();
+            String textToRead3 = inputNote.getText().toString().trim();
+
+            view.findViewById(R.id.start_reading).setOnClickListener(v -> {
+                textReadingNote.setText("Reading Note...");
+                textToSpeech.speak(textToRead1, TextToSpeech.QUEUE_ADD, null);
+                textToSpeech.speak(textToRead2, TextToSpeech.QUEUE_ADD, null);
+                textToSpeech.speak(textToRead3, TextToSpeech.QUEUE_ADD, null);
+            });
+
+            view.findViewById(R.id.stop_reading).setOnClickListener(v -> {
+                textReadingNote.setText("Do you want NOTED to read the note for you?");
+                if(textToSpeech != null) {
+                    textToSpeech.stop();
                 }
-            }));
-        } else {
-            layoutMiscellaneous.findViewById(R.id.layout_read_note).setVisibility(View.GONE);
+                dialogReadingNote.dismiss();
+            });
         }
+        dialogReadingNote.setCancelable(false);
+        dialogReadingNote.show();
     }
 
     private void showDeleteNoteDialog() {
@@ -590,58 +712,19 @@ public class CreateNoteActivity extends AppCompatActivity {
         gradientDrawable.setColor(Color.parseColor(selectedNoteColor));
     }
 
-    private void showDialogReadingNote() {
-        if(dialogReadingNote == null) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(CreateNoteActivity.this);
-            View view = LayoutInflater.from(this).inflate(
-                    R.layout.layout_reading_note,
-                    (ViewGroup) findViewById(R.id.layout_reading_note_container)
-            );
-            builder.setView(view);
-
-            dialogReadingNote = builder.create();
-            if(dialogReadingNote.getWindow() != null) {
-                dialogReadingNote.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-            }
-
-            textReadingNote = view.findViewById(R.id.text_reading_text);
-
-            String textToRead1 = inputNoteTitle.getText().toString().trim();
-            String textToRead2 = inputNoteSubtitle.getText().toString().trim();
-            String textToRead3 = inputNote.getText().toString().trim();
-
-            view.findViewById(R.id.start_reading).setOnClickListener(v -> {
-                textReadingNote.setText("Reading Note...");
-                textToSpeech.speak(textToRead1, TextToSpeech.QUEUE_ADD, null);
-                textToSpeech.speak(textToRead2, TextToSpeech.QUEUE_ADD, null);
-                textToSpeech.speak(textToRead3, TextToSpeech.QUEUE_ADD, null);
-            });
-
-            view.findViewById(R.id.stop_reading).setOnClickListener(v -> {
-                textReadingNote.setText("Do you want us to read the note for you?");
-                if(textToSpeech != null) {
-                    textToSpeech.stop();
-                }
-                dialogReadingNote.dismiss();
-            });
-        }
-        dialogReadingNote.setCancelable(false);
-        dialogReadingNote.show();
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_SELECT_IMAGE && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_CODE_TAKE_PHOTO && resultCode == RESULT_OK) {
             if (data != null) {
-                Uri selectedImageUri = data.getData();
-                if (selectedImageUri != null) {
+                Uri takePhotoUri = data.getData();
+                if (takePhotoUri != null) {
                     try {
-                        Glide.with(imageNote.getContext()).load(selectedImageUri).centerCrop().into(imageNote);
+                        Glide.with(imageNote.getContext()).load(takePhotoUri).centerCrop().into(imageNote);
                         imageNote.setVisibility(View.VISIBLE);
                         removeImgBtn.setVisibility(View.VISIBLE);
 
-                        selectedImagePath = getPathFromUri(selectedImageUri);
+                        selectedImagePath = getPathFromUri(takePhotoUri);
                     } catch (Exception exception) {
                         Alerter.create(CreateNoteActivity.this)
                                 .setText("Some ERROR occurred!")
@@ -658,16 +741,16 @@ public class CreateNoteActivity extends AppCompatActivity {
                     }
                 }
             }
-        } else if (requestCode == REQUEST_CODE_TAKE_PHOTO && resultCode == RESULT_OK) {
+        } else if (requestCode == REQUEST_CODE_SELECT_IMAGE && resultCode == RESULT_OK) {
             if (data != null) {
-                Uri takePhotoUri = data.getData();
-                if (takePhotoUri != null) {
+                Uri selectedImageUri = data.getData();
+                if (selectedImageUri != null) {
                     try {
-                        Glide.with(imageNote.getContext()).load(takePhotoUri).centerCrop().into(imageNote);
+                        Glide.with(imageNote.getContext()).load(selectedImageUri).centerCrop().into(imageNote);
                         imageNote.setVisibility(View.VISIBLE);
                         removeImgBtn.setVisibility(View.VISIBLE);
 
-                        selectedImagePath = getPathFromUri(takePhotoUri);
+                        selectedImagePath = getPathFromUri(selectedImageUri);
                     } catch (Exception exception) {
                         Alerter.create(CreateNoteActivity.this)
                                 .setText("Some ERROR occurred!")
@@ -713,7 +796,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         if(textToSpeech != null) {
             textToSpeech.stop();
             dialogReadingNote.dismiss();
-            textReadingNote.setText("Do you want us to read the note for you?");
+            textReadingNote.setText("Do you want NOTED to read the note for you?");
         }
     }
 

@@ -20,7 +20,7 @@
     <string name="take_photo">Take Photo</string>
     <string name="add_voice_note">Add Voice Note</string>
     <string name="select_image">Select Image</string>
-    <string name="reading_text">Do you want us to read the note for you?</string>
+    <string name="reading_text">Do you want NOTED to read the note for you?</string>
     <string name="stop_reading">CANCEL</string>
     <string name="start_reading">READ</string>
     <string name="read_note">Read Note</string>
@@ -28,4 +28,8 @@
     <string name="rate_dialog_message">If you like the app &amp; find it useful, would you mind taking a moment to rate it? It won\'t take time. Thanks for your support!</string>
     <string name="rate_dialog_ok">Rate It Now</string>
     <string name="rate_dialog_cancel">Remind Me Later</string>
+    <string name="share_note">Share Note</string>
+    <string name="default_version">Version</string>
+    <string name="app_info_copyright">&#xa9; 2020 by Developer Depository</string>
+    <string name="privacy_policy">Privacy Policy</string>
 </resources>

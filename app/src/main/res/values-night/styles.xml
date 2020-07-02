@@ -13,6 +13,7 @@
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowActionModeOverlay">true</item>
 
+        <item name="android:windowBackground">@color/colorBackground</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowDisablePreview">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
@@ -46,12 +47,6 @@
     </style>
 
     <style name="InfoAlert" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:fontFamily">@font/poppins</item>
-        <item name="android:textStyle">normal</item>
-    </style>
-
-    <style name="SuccessAlert" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:fontFamily">@font/poppins</item>
         <item name="android:textStyle">normal</item>
