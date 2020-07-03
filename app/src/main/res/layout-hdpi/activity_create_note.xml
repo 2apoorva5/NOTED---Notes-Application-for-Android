@@ -10,7 +10,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="40dp"
         android:paddingBottom="16dp"
         android:clipToPadding="false">
 
@@ -21,8 +21,8 @@
 
             <ImageButton
                 android:id="@+id/create_note_back_btn"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginStart="12dp"
                 android:src="@drawable/ic_back"
@@ -37,8 +37,8 @@
 
             <ImageButton
                 android:id="@+id/create_note_save_btn"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_marginEnd="12dp"
                 android:src="@drawable/ic_save"
                 android:scaleType="centerCrop"
@@ -56,7 +56,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:theme="@style/EditTextAppearance"
                 android:background="@null"
@@ -67,7 +67,7 @@
                 android:importantForAutofill="no"
                 android:textColor="@color/colorText"
                 android:textColorHint="@color/colorTextHint"
-                android:textSize="18sp"
+                android:textSize="13sp"
                 android:textAlignment="textStart"
                 android:textAllCaps="false"
                 android:textStyle="bold"
@@ -82,24 +82,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 android:textStyle="normal"
                 android:textAllCaps="false"
                 android:textAlignment="textStart"
-                android:textSize="14sp"
+                android:textSize="10sp"
                 android:textColor="@color/colorTextHint"
                 android:fontFamily="@font/poppins_light"
                 android:includeFontPadding="false"
                 app:layout_constraintTop_toBottomOf="@+id/input_note_title"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="SmallSp" />
 
             <EditText
                 android:id="@+id/input_note_subtitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
                 android:theme="@style/EditTextAppearance"
                 android:background="@null"
@@ -110,20 +111,21 @@
                 android:inputType="textMultiLine"
                 android:textColor="@color/colorTextSubtitle"
                 android:textColorHint="@color/colorTextHint"
-                android:textSize="16sp"
+                android:textSize="11sp"
                 android:textAlignment="textStart"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 android:maxLength="200"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
                 app:layout_constraintStart_toEndOf="@+id/view_indicator_subtitle"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_date_time"/>
-            
+                app:layout_constraintTop_toBottomOf="@+id/text_date_time"
+                tools:ignore="SmallSp" />
+
             <View
                 android:id="@+id/view_indicator_subtitle"
-                android:layout_width="8dp"
+                android:layout_width="6dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="16dp"
                 android:background="@drawable/background_subtitle_indicator"
@@ -138,27 +140,28 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/poppins"
                 android:includeFontPadding="false"
                 android:textAlignment="textStart"
                 android:textAllCaps="false"
-                android:textSize="14sp"
+                android:textSize="10sp"
                 android:textStyle="bold"
                 android:visibility="gone"
                 android:autoLink="web"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/remove_url_btn"
-                app:layout_constraintTop_toBottomOf="@+id/input_note_subtitle" />
+                app:layout_constraintTop_toBottomOf="@+id/input_note_subtitle"
+                tools:ignore="SmallSp" />
 
             <ImageButton
                 android:id="@+id/remove_url_btn"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/background_remove"
                 android:contentDescription="@string/app_name"
-                android:padding="4dp"
+                android:padding="3dp"
                 android:src="@drawable/ic_remove"
                 android:tint="@color/colorBackground"
                 android:visibility="gone"
@@ -171,7 +174,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:adjustViewBounds="true"
                 android:visibility="gone"
@@ -179,11 +182,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_url"/>
-            
+
             <ImageButton
                 android:id="@+id/remove_img_btn"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/background_remove"
@@ -200,7 +203,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginEnd="16dp"
                 android:theme="@style/EditTextAppearance"
                 android:background="@null"
@@ -212,14 +215,15 @@
                 android:inputType="textMultiLine"
                 android:textColor="@color/colorText"
                 android:textColorHint="@color/colorTextHint"
-                android:textSize="14sp"
+                android:textSize="10sp"
                 android:textAllCaps="false"
                 android:textStyle="normal"
-                android:minHeight="200dp"
+                android:minHeight="140dp"
                 android:gravity="top"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/image_note"/>
+                app:layout_constraintTop_toBottomOf="@+id/image_note"
+                tools:ignore="SmallSp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -227,15 +231,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="40dp"
         android:elevation="8dp"
         android:background="@color/colorBackground"
         android:layout_gravity="bottom">
 
         <ImageButton
             android:id="@+id/create_note_add_actions"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginStart="12dp"
             android:src="@drawable/ic_add_actions"
             android:scaleType="centerCrop"
@@ -249,8 +253,8 @@
 
         <ImageButton
             android:id="@+id/create_note_options_menu"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginEnd="12dp"
             android:src="@drawable/ic_options_menu"
             android:scaleType="centerCrop"

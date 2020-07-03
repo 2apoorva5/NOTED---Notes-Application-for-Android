@@ -120,7 +120,7 @@
                 app:layout_constraintStart_toEndOf="@+id/view_indicator_subtitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_date_time"/>
-            
+
             <View
                 android:id="@+id/view_indicator_subtitle"
                 android:layout_width="8dp"
@@ -179,7 +179,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_url"/>
-            
+
             <ImageButton
                 android:id="@+id/remove_img_btn"
                 android:layout_width="36dp"

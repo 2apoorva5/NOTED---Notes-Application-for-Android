@@ -1,25 +1,23 @@
 package com.developerdepository.noted;
 
 import android.annotation.SuppressLint;
-import android.app.ActivityOptions;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.Pair;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -55,7 +53,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
-import com.google.android.play.core.install.InstallState;
 import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
@@ -69,6 +66,7 @@ import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
 import hotchemi.android.rate.AppRate;
 import maes.tech.intentanim.CustomIntent;
 
@@ -167,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(noteList.size() != 0) {
+                if (noteList.size() != 0) {
                     notesAdapter.searchNotes(s.toString());
                 }
             }
@@ -180,22 +178,22 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
 
         bottomAppBar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
-                case R.id.menu_add :
+                case R.id.menu_add:
                     UIUtil.hideKeyboard(MainActivity.this);
                     Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
                     startActivityForResult(intent, REQUEST_CODE_ADD_NOTE);
                     CustomIntent.customType(MainActivity.this, "left-to-right");
                     inputSearch.setText(null);
                     break;
-                case R.id.menu_image :
+                case R.id.menu_image:
                     UIUtil.hideKeyboard(MainActivity.this);
                     showAddImageDialog();
                     break;
-                case R.id.menu_voice :
+                case R.id.menu_voice:
                     UIUtil.hideKeyboard(MainActivity.this);
                     voiceNote();
                     break;
-                case R.id.menu_web_link :
+                case R.id.menu_web_link:
                     showAddURLDialog();
                     break;
             }
@@ -217,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
 
         navigationMenu.setOnClickListener(v -> {
             UIUtil.hideKeyboard(MainActivity.this);
-            if(drawerLayout.isDrawerVisible(GravityCompat.END))
+            if (drawerLayout.isDrawerVisible(GravityCompat.END))
                 drawerLayout.closeDrawer(GravityCompat.END);
             else drawerLayout.openDrawer(GravityCompat.END);
         });
@@ -228,26 +226,34 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_add_note :
+            case R.id.menu_add_note:
                 Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_ADD_NOTE);
                 CustomIntent.customType(MainActivity.this, "left-to-right");
                 inputSearch.setText(null);
                 break;
-            case R.id.menu_add_image :
+            case R.id.menu_add_image:
                 showAddImageDialog();
                 break;
-            case R.id.menu_add_voice :
+            case R.id.menu_add_voice:
                 voiceNote();
                 break;
-            case R.id.menu_add_url :
+            case R.id.menu_add_url:
                 showAddURLDialog();
                 break;
-            case R.id.menu_app_info :
-                startActivity(new Intent(MainActivity.this, AppInfoActivity.class));
-                CustomIntent.customType(MainActivity.this, "bottom-to-up");
+            case R.id.menu_app_theme:
+                startActivity(new Intent(Settings.ACTION_DISPLAY_SETTINGS));
+                drawerLayout.closeDrawer(GravityCompat.END);
                 break;
-            case R.id.menu_rate_noted :
+            case R.id.menu_app_info:
+                //redirect user to app Settings
+                Intent appInfoIntent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                appInfoIntent.addCategory(Intent.CATEGORY_DEFAULT);
+                appInfoIntent.setData(Uri.parse("package:" + MainActivity.this.getPackageName()));
+                startActivity(appInfoIntent);
+                drawerLayout.closeDrawer(GravityCompat.END);
+                break;
+            case R.id.menu_rate_noted:
                 try {
                     inputSearch.setText(null);
                     startActivity(new Intent(Intent.ACTION_VIEW,
@@ -259,17 +265,17 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                 }
                 drawerLayout.closeDrawer(GravityCompat.END);
                 break;
-            case R.id.menu_share_noted :
+            case R.id.menu_share_noted:
                 inputSearch.setText(null);
-                Intent shareIntent =   new Intent(android.content.Intent.ACTION_SEND);
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT,"NOTED - Don't Bother Remembering!");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "NOTED - Don't Bother Remembering!");
                 String app_url = "https://play.google.com/store/apps/details?id=" + MainActivity.this.getPackageName();
-                shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, app_url);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, app_url);
                 startActivity(Intent.createChooser(shareIntent, "Share via"));
                 drawerLayout.closeDrawer(GravityCompat.END);
                 break;
-            case R.id.menu_more_apps :
+            case R.id.menu_more_apps:
                 try {
                     inputSearch.setText(null);
                     startActivity(new Intent(Intent.ACTION_VIEW,
@@ -281,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                 }
                 drawerLayout.closeDrawer(GravityCompat.END);
                 break;
-            case R.id.menu_privacy_policy :
+            case R.id.menu_privacy_policy:
                 inputSearch.setText(null);
                 String privacyPolicyUrl = "https://developerdepository.wixsite.com/noted-policies";
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(privacyPolicyUrl));
@@ -310,7 +316,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
     }
 
     private void showAddImageDialog() {
-        if(dialogAddImage == null) {
+        if (dialogAddImage == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             View view = LayoutInflater.from(this).inflate(
                     R.layout.layout_add_image,
@@ -319,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
             builder.setView(view);
 
             dialogAddImage = builder.create();
-            if(dialogAddImage.getWindow() != null) {
+            if (dialogAddImage.getWindow() != null) {
                 dialogAddImage.getWindow().setBackgroundDrawable(new ColorDrawable(0));
             }
 
@@ -358,7 +364,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
         String filePath;
         Cursor cursor = getContentResolver()
                 .query(contentUri, null, null, null, null);
-        if(cursor == null) {
+        if (cursor == null) {
             filePath = contentUri.getPath();
         } else {
             cursor.moveToFirst();
@@ -378,7 +384,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
     }
 
     private void showAddURLDialog() {
-        if(dialogAddURL == null) {
+        if (dialogAddURL == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             View view = LayoutInflater.from(this).inflate(
                     R.layout.layout_add_url,
@@ -387,7 +393,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
             builder.setView(view);
 
             dialogAddURL = builder.create();
-            if(dialogAddURL.getWindow() != null) {
+            if (dialogAddURL.getWindow() != null) {
                 dialogAddURL.getWindow().setBackgroundDrawable(new ColorDrawable(0));
             }
 
@@ -395,9 +401,9 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
             inputURL.requestFocus();
 
             view.findViewById(R.id.dialog_add_btn).setOnClickListener(v -> {
-                if(inputURL.getText().toString().trim().isEmpty()) {
+                if (inputURL.getText().toString().trim().isEmpty()) {
                     Toast.makeText(MainActivity.this, "Enter URL", Toast.LENGTH_SHORT).show();
-                } else if(!Patterns.WEB_URL.matcher(inputURL.getText().toString().trim()).matches()) {
+                } else if (!Patterns.WEB_URL.matcher(inputURL.getText().toString().trim()).matches()) {
                     Toast.makeText(MainActivity.this, "Enter Valid URL", Toast.LENGTH_SHORT).show();
                 } else {
                     dialogAddURL.dismiss();
@@ -436,30 +442,30 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
             @Override
             protected void onPostExecute(List<Note> notes) {
                 super.onPostExecute(notes);
-                if(requestCode == REQUEST_CODE_SHOW_NOTES) {
+                if (requestCode == REQUEST_CODE_SHOW_NOTES) {
                     noteList.addAll(notes);
                     notesAdapter.notifyDataSetChanged();
-                    if(drawerLayout.isDrawerVisible(GravityCompat.END))
+                    if (drawerLayout.isDrawerVisible(GravityCompat.END))
                         drawerLayout.closeDrawer(GravityCompat.END);
-                } else if(requestCode == REQUEST_CODE_ADD_NOTE) {
+                } else if (requestCode == REQUEST_CODE_ADD_NOTE) {
                     noteList.add(0, notes.get(0));
                     notesAdapter.notifyItemInserted(0);
                     notesRecyclerView.smoothScrollToPosition(0);
-                    if(drawerLayout.isDrawerVisible(GravityCompat.END))
+                    if (drawerLayout.isDrawerVisible(GravityCompat.END))
                         drawerLayout.closeDrawer(GravityCompat.END);
-                } else if(requestCode == REQUEST_CODE_UPDATE_NOTE) {
+                } else if (requestCode == REQUEST_CODE_UPDATE_NOTE) {
                     noteList.remove(noteClickedPosition);
-                    if(isNoteDeleted) {
+                    if (isNoteDeleted) {
                         notesAdapter.notifyItemRemoved(noteClickedPosition);
                     } else {
                         noteList.add(noteClickedPosition, notes.get(noteClickedPosition));
                         notesAdapter.notifyItemChanged(noteClickedPosition);
                     }
-                    if(drawerLayout.isDrawerVisible(GravityCompat.END))
+                    if (drawerLayout.isDrawerVisible(GravityCompat.END))
                         drawerLayout.closeDrawer(GravityCompat.END);
                 }
 
-                if(noteList.size() != 0) {
+                if (noteList.size() != 0) {
                     imageEmpty.setVisibility(View.GONE);
                     textEmpty.setVisibility(View.GONE);
                 } else {
@@ -486,8 +492,8 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
     @Override
     public void onNoteLongClicked(View view, Note note, int position) {
         noteClickedPosition = position;
-        view.setForeground(getDrawable(R.drawable.background_selected_note));
-        if(actionMode != null) {
+        view.setForeground(getDrawable(R.drawable.foreground_selected_note));
+        if (actionMode != null) {
             return;
         }
 
@@ -506,7 +512,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.note_menu_edit :
+                    case R.id.note_menu_edit:
                         Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
                         intent.putExtra("isViewOrUpdate", true);
                         intent.putExtra("note", note);
@@ -515,12 +521,12 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                         inputSearch.setText(null);
                         mode.finish();
                         return true;
-                    case R.id.note_menu_share :
-                        if(note.getImagePath() == null) {
+                    case R.id.note_menu_share:
+                        if (note.getImagePath() == null) {
                             String content = note.getTitle() + "\n\n" + note.getSubtitle() + "\n\n" + note.getNoteText();
-                            Intent shareIntent =   new Intent(android.content.Intent.ACTION_SEND);
+                            Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
                             shareIntent.setType("text/plain");
-                            shareIntent.putExtra(Intent.EXTRA_SUBJECT,note.getTitle());
+                            shareIntent.putExtra(Intent.EXTRA_SUBJECT, note.getTitle());
                             shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, content);
                             startActivity(Intent.createChooser(shareIntent, "Share via"));
                         } else {
@@ -536,7 +542,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                         }
                         mode.finish();
                         return true;
-                    case R.id.note_menu_delete :
+                    case R.id.note_menu_delete:
                         showDeleteNoteDialog(note);
                         mode.finish();
                         return true;
@@ -576,7 +582,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                             noteList.remove(noteClickedPosition);
                             notesAdapter.notifyItemRemoved(noteClickedPosition);
 
-                            if(noteList.size() != 0) {
+                            if (noteList.size() != 0) {
                                 imageEmpty.setVisibility(View.GONE);
                                 textEmpty.setVisibility(View.GONE);
                             } else {
@@ -601,10 +607,10 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
         mAppUpdateManager = AppUpdateManagerFactory.create(MainActivity.this);
 
         installStateUpdatedListener = state -> {
-            if (state.installStatus() == InstallStatus.DOWNLOADED){
+            if (state.installStatus() == InstallStatus.DOWNLOADED) {
                 popupSnackbarForCompleteUpdate();
-            } else if (state.installStatus() == InstallStatus.INSTALLED){
-                if (mAppUpdateManager != null){
+            } else if (state.installStatus() == InstallStatus.INSTALLED) {
+                if (mAppUpdateManager != null) {
                     mAppUpdateManager.unregisterListener(installStateUpdatedListener);
                 }
 
@@ -643,7 +649,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                         Snackbar.LENGTH_INDEFINITE);
 
         snackbar.setAction("Install", view -> {
-            if (mAppUpdateManager != null){
+            if (mAppUpdateManager != null) {
                 mAppUpdateManager.completeUpdate();
             }
         });
@@ -657,14 +663,14 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_ADD_NOTE && resultCode == RESULT_OK) {
             getNotes(REQUEST_CODE_ADD_NOTE, false);
-        } else if(requestCode == REQUEST_CODE_UPDATE_NOTE && resultCode == RESULT_OK) {
-            if(data != null) {
+        } else if (requestCode == REQUEST_CODE_UPDATE_NOTE && resultCode == RESULT_OK) {
+            if (data != null) {
                 getNotes(REQUEST_CODE_UPDATE_NOTE, data.getBooleanExtra("isNoteDeleted", false));
             }
-        } else if(requestCode == REQUEST_CODE_TAKE_PHOTO && resultCode == RESULT_OK) {
-            if(data != null) {
+        } else if (requestCode == REQUEST_CODE_TAKE_PHOTO && resultCode == RESULT_OK) {
+            if (data != null) {
                 Uri takePhotoUri = data.getData();
-                if(takePhotoUri != null) {
+                if (takePhotoUri != null) {
                     try {
                         String selectedImagePath = getPathFromUri(takePhotoUri);
                         Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
@@ -690,10 +696,10 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                     }
                 }
             }
-        } else if(requestCode == REQUEST_CODE_SELECT_IMAGE && resultCode == RESULT_OK) {
-            if(data != null) {
+        } else if (requestCode == REQUEST_CODE_SELECT_IMAGE && resultCode == RESULT_OK) {
+            if (data != null) {
                 Uri selectedImageUri = data.getData();
-                if(selectedImageUri != null) {
+                if (selectedImageUri != null) {
                     try {
                         String selectedImagePath = getPathFromUri(selectedImageUri);
                         Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
@@ -719,8 +725,8 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                     }
                 }
             }
-        } else if(requestCode == REQUEST_CODE_VOICE_NOTE && resultCode == RESULT_OK) {
-            if(data != null) {
+        } else if (requestCode == REQUEST_CODE_VOICE_NOTE && resultCode == RESULT_OK) {
+            if (data != null) {
                 ArrayList<String> voiceResult = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
                 intent.putExtra("isFromQuickActions", true);
@@ -755,7 +761,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
 
     @Override
     public void onBackPressed() {
-        if(drawerLayout.isDrawerVisible(GravityCompat.END))
+        if (drawerLayout.isDrawerVisible(GravityCompat.END))
             drawerLayout.closeDrawer(GravityCompat.END);
         else finishAffinity();
     }

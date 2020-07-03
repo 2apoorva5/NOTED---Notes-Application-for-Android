@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
-import android.speech.tts.Voice;
 import android.text.InputType;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -87,7 +86,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         selectedNoteColor = "#" + Integer.toHexString(ContextCompat.getColor(getApplicationContext(), R.color.colorDefaultNoteColor) & 0x00ffffff);
         selectedImagePath = "";
 
-        if(getIntent().getBooleanExtra("isViewOrUpdate", false)) {
+        if (getIntent().getBooleanExtra("isViewOrUpdate", false)) {
             alreadyAvailableNote = (Note) getIntent().getSerializableExtra("note");
             setViewOrUpdateNote();
         }
@@ -105,19 +104,19 @@ public class CreateNoteActivity extends AppCompatActivity {
             selectedImagePath = "";
         });
 
-        if(getIntent().getBooleanExtra("isFromQuickActions", false)) {
+        if (getIntent().getBooleanExtra("isFromQuickActions", false)) {
             String type = getIntent().getStringExtra("quickActionType");
-            if(type != null) {
-                if(type.equals("image")) {
+            if (type != null) {
+                if (type.equals("image")) {
                     selectedImagePath = getIntent().getStringExtra("imagePath");
                     Glide.with(imageNote.getContext()).load(selectedImagePath).centerCrop().into(imageNote);
                     imageNote.setVisibility(View.VISIBLE);
                     removeImgBtn.setVisibility(View.VISIBLE);
-                } else if(type.equals("URL")) {
+                } else if (type.equals("URL")) {
                     textUrl.setText(getIntent().getStringExtra("URL"));
                     textUrl.setVisibility(View.VISIBLE);
                     removeUrlBtn.setVisibility(View.VISIBLE);
-                } else if(type.equals("voiceNote")) {
+                } else if (type.equals("voiceNote")) {
                     inputNote.setText(getIntent().getStringExtra("inputText"));
                 }
             }
@@ -173,14 +172,14 @@ public class CreateNoteActivity extends AppCompatActivity {
         inputNoteSubtitle.setText(alreadyAvailableNote.getSubtitle());
         inputNote.setText(alreadyAvailableNote.getNoteText());
         textDateTime.setText(String.format("Edited %s", new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm a", Locale.getDefault()).format(new Date())));
-        if(alreadyAvailableNote.getImagePath() != null && !alreadyAvailableNote.getImagePath().trim().isEmpty()) {
+        if (alreadyAvailableNote.getImagePath() != null && !alreadyAvailableNote.getImagePath().trim().isEmpty()) {
             Glide.with(imageNote.getContext()).load(alreadyAvailableNote.getImagePath()).centerCrop().into(imageNote);
             imageNote.setVisibility(View.VISIBLE);
             removeImgBtn.setVisibility(View.VISIBLE);
             selectedImagePath = alreadyAvailableNote.getImagePath();
         }
 
-        if(alreadyAvailableNote.getWebLink() != null && !alreadyAvailableNote.getWebLink().trim().isEmpty()) {
+        if (alreadyAvailableNote.getWebLink() != null && !alreadyAvailableNote.getWebLink().trim().isEmpty()) {
             textUrl.setText(alreadyAvailableNote.getWebLink());
             textUrl.setVisibility(View.VISIBLE);
             removeUrlBtn.setVisibility(View.VISIBLE);
@@ -226,15 +225,15 @@ public class CreateNoteActivity extends AppCompatActivity {
         note.setDateTime(textDateTime.getText().toString().trim());
         note.setColor(selectedNoteColor);
 
-        if(imageNote.getVisibility() == View.VISIBLE) {
+        if (imageNote.getVisibility() == View.VISIBLE) {
             note.setImagePath(selectedImagePath);
         }
 
-        if(textUrl.getVisibility() == View.VISIBLE && removeUrlBtn.getVisibility() == View.VISIBLE) {
+        if (textUrl.getVisibility() == View.VISIBLE && removeUrlBtn.getVisibility() == View.VISIBLE) {
             note.setWebLink(textUrl.getText().toString().trim());
         }
 
-        if(alreadyAvailableNote != null) {
+        if (alreadyAvailableNote != null) {
             note.setId(alreadyAvailableNote.getId());
         }
 
@@ -321,7 +320,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         String filePath;
         Cursor cursor = getContentResolver()
                 .query(contentUri, null, null, null, null);
-        if(cursor == null) {
+        if (cursor == null) {
             filePath = contentUri.getPath();
         } else {
             cursor.moveToFirst();
@@ -341,7 +340,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     }
 
     private void showAddURLDialog() {
-        if(dialogAddURL == null) {
+        if (dialogAddURL == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(CreateNoteActivity.this);
             View view = LayoutInflater.from(this).inflate(
                     R.layout.layout_add_url,
@@ -350,7 +349,7 @@ public class CreateNoteActivity extends AppCompatActivity {
             builder.setView(view);
 
             dialogAddURL = builder.create();
-            if(dialogAddURL.getWindow() != null) {
+            if (dialogAddURL.getWindow() != null) {
                 dialogAddURL.getWindow().setBackgroundDrawable(new ColorDrawable(0));
             }
 
@@ -358,9 +357,9 @@ public class CreateNoteActivity extends AppCompatActivity {
             inputURL.requestFocus();
 
             view.findViewById(R.id.dialog_add_btn).setOnClickListener(v -> {
-                if(inputURL.getText().toString().trim().isEmpty()) {
+                if (inputURL.getText().toString().trim().isEmpty()) {
                     Toast.makeText(CreateNoteActivity.this, "Enter URL", Toast.LENGTH_SHORT).show();
-                } else if(!Patterns.WEB_URL.matcher(inputURL.getText().toString().trim()).matches()) {
+                } else if (!Patterns.WEB_URL.matcher(inputURL.getText().toString().trim()).matches()) {
                     Toast.makeText(CreateNoteActivity.this, "Enter Valid URL", Toast.LENGTH_SHORT).show();
                 } else {
                     UIUtil.hideKeyboard(view.getContext(), inputURL);
@@ -517,20 +516,20 @@ public class CreateNoteActivity extends AppCompatActivity {
             setSubtitleIndicatorColor();
         });
 
-        if(alreadyAvailableNote != null && alreadyAvailableNote.getColor() != null && !alreadyAvailableNote.getColor().trim().isEmpty()) {
-            if(alreadyAvailableNote.getColor().equals("#FFB400")) {
+        if (alreadyAvailableNote != null && alreadyAvailableNote.getColor() != null && !alreadyAvailableNote.getColor().trim().isEmpty()) {
+            if (alreadyAvailableNote.getColor().equals("#FFB400")) {
                 layoutMiscellaneous.findViewById(R.id.view_color2).performClick();
-            } else if(alreadyAvailableNote.getColor().equals("#3B81FF")) {
+            } else if (alreadyAvailableNote.getColor().equals("#3B81FF")) {
                 layoutMiscellaneous.findViewById(R.id.view_color3).performClick();
-            } else if(alreadyAvailableNote.getColor().equals("#FF4E4E")) {
+            } else if (alreadyAvailableNote.getColor().equals("#FF4E4E")) {
                 layoutMiscellaneous.findViewById(R.id.view_color4).performClick();
-            } else if(alreadyAvailableNote.getColor().equals("#13A662")) {
+            } else if (alreadyAvailableNote.getColor().equals("#13A662")) {
                 layoutMiscellaneous.findViewById(R.id.view_color5).performClick();
-            } else if(alreadyAvailableNote.getColor().equals("#FF388E")) {
+            } else if (alreadyAvailableNote.getColor().equals("#FF388E")) {
                 layoutMiscellaneous.findViewById(R.id.view_color6).performClick();
-            } else if(alreadyAvailableNote.getColor().equals("#118E9C")) {
+            } else if (alreadyAvailableNote.getColor().equals("#118E9C")) {
                 layoutMiscellaneous.findViewById(R.id.view_color7).performClick();
-            } else if(alreadyAvailableNote.getColor().equals("#FF822E")) {
+            } else if (alreadyAvailableNote.getColor().equals("#FF822E")) {
                 layoutMiscellaneous.findViewById(R.id.view_color8).performClick();
             }
         }
@@ -556,10 +555,10 @@ public class CreateNoteActivity extends AppCompatActivity {
                 return;
             } else {
                 textToSpeech = new TextToSpeech(CreateNoteActivity.this, status -> {
-                    if(status == TextToSpeech.SUCCESS) {
+                    if (status == TextToSpeech.SUCCESS) {
                         int result = textToSpeech.setLanguage(Locale.ENGLISH);
 
-                        if(result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                             bottomSheetMiscellaneous.setState(BottomSheetBehavior.STATE_COLLAPSED);
                             Toast.makeText(CreateNoteActivity.this, "Sorry, language not supported!", Toast.LENGTH_SHORT).show();
                         } else {
@@ -596,14 +595,14 @@ public class CreateNoteActivity extends AppCompatActivity {
                         .setProgressColorInt(getResources().getColor(android.R.color.white))
                         .show();
                 return;
-            } else if(imageNote.getVisibility() == View.GONE) {
+            } else if (imageNote.getVisibility() == View.GONE) {
                 UIUtil.hideKeyboard(CreateNoteActivity.this);
                 String content = inputNoteTitle.getText().toString().trim() + "\n\n" +
                         inputNoteSubtitle.getText().toString().trim() + "\n\n" +
                         inputNote.getText().toString().trim();
-                Intent shareIntent =   new Intent(android.content.Intent.ACTION_SEND);
+                Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT,inputNoteTitle.getText().toString().trim());
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, inputNoteTitle.getText().toString().trim());
                 shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, content);
                 startActivity(Intent.createChooser(shareIntent, "Share via"));
             } else {
@@ -622,7 +621,7 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         });
 
-        if(alreadyAvailableNote != null) {
+        if (alreadyAvailableNote != null) {
             layoutMiscellaneous.findViewById(R.id.layout_delete_note).setVisibility(View.VISIBLE);
             layoutMiscellaneous.findViewById(R.id.layout_delete_note).setOnClickListener(v -> {
                 UIUtil.hideKeyboard(CreateNoteActivity.this);
@@ -633,7 +632,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     }
 
     private void showDialogReadingNote() {
-        if(dialogReadingNote == null) {
+        if (dialogReadingNote == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(CreateNoteActivity.this);
             View view = LayoutInflater.from(this).inflate(
                     R.layout.layout_reading_note,
@@ -642,7 +641,7 @@ public class CreateNoteActivity extends AppCompatActivity {
             builder.setView(view);
 
             dialogReadingNote = builder.create();
-            if(dialogReadingNote.getWindow() != null) {
+            if (dialogReadingNote.getWindow() != null) {
                 dialogReadingNote.getWindow().setBackgroundDrawable(new ColorDrawable(0));
             }
 
@@ -661,7 +660,7 @@ public class CreateNoteActivity extends AppCompatActivity {
 
             view.findViewById(R.id.stop_reading).setOnClickListener(v -> {
                 textReadingNote.setText("Do you want NOTED to read the note for you?");
-                if(textToSpeech != null) {
+                if (textToSpeech != null) {
                     textToSpeech.stop();
                 }
                 dialogReadingNote.dismiss();
@@ -768,7 +767,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                 }
             }
         } else if (requestCode == REQUEST_CODE_VOICE_NOTE && resultCode == RESULT_OK) {
-            if(data != null) {
+            if (data != null) {
                 ArrayList<String> voiceResult = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 inputNote.setText(voiceResult.get(0));
             }
@@ -793,7 +792,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if(textToSpeech != null) {
+        if (textToSpeech != null) {
             textToSpeech.stop();
             dialogReadingNote.dismiss();
             textReadingNote.setText("Do you want NOTED to read the note for you?");
@@ -803,7 +802,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(textToSpeech != null) {
+        if (textToSpeech != null) {
             textToSpeech.stop();
             textToSpeech.shutdown();
             dialogReadingNote.dismiss();
@@ -813,7 +812,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(textToSpeech != null) {
+        if (textToSpeech != null) {
             textToSpeech.stop();
             textToSpeech.shutdown();
             dialogReadingNote.dismiss();

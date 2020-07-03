@@ -2,9 +2,7 @@ package com.developerdepository.noted.adapters;
 
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -13,15 +11,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.developerdepository.noted.R;
 import com.developerdepository.noted.entities.Note;
 import com.developerdepository.noted.listeners.NotesListener;
@@ -114,7 +106,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
                 gradientDrawable.setColor(Color.parseColor(String.valueOf(R.color.colorDefaultNoteColor)));
             }
 
-            if(note.getImagePath() != null && !note.getImagePath().isEmpty()) {
+            if (note.getImagePath() != null && !note.getImagePath().isEmpty()) {
                 itemNoteImage.setVisibility(View.VISIBLE);
                 itemNoteImage.setImageBitmap(BitmapFactory.decodeFile(note.getImagePath()));
             } else {
@@ -128,11 +120,11 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if(searchKeyword.trim().isEmpty()) {
+                if (searchKeyword.trim().isEmpty()) {
                     notes = notesSource;
                 } else {
                     ArrayList<Note> temp = new ArrayList<>();
-                    for(Note note : notesSource) {
+                    for (Note note : notesSource) {
                         if (note.getTitle().toLowerCase().contains(searchKeyword.toLowerCase())
                                 || note.getSubtitle().toLowerCase().contains(searchKeyword.toLowerCase())
                                 || note.getNoteText().toLowerCase().contains(searchKeyword.toLowerCase())) {
@@ -149,7 +141,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
     }
 
     public void cancelTimer() {
-        if(timer != null) {
+        if (timer != null) {
             timer.cancel();
         }
     }

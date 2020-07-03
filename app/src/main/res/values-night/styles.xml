@@ -43,13 +43,13 @@
     <style name="ErrorAlert" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:fontFamily">@font/poppins</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="InfoAlert" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:fontFamily">@font/poppins</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="NavigationTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
@@ -58,7 +58,6 @@
     </style>
 
     <style name="NavigationMenuTextStyle" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/poppins</item>
     </style>
