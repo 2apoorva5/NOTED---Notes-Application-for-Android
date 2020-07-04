@@ -243,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                 break;
             case R.id.menu_app_theme:
                 startActivity(new Intent(Settings.ACTION_DISPLAY_SETTINGS));
+                inputSearch.setText(null);
                 drawerLayout.closeDrawer(GravityCompat.END);
                 break;
             case R.id.menu_app_info:
@@ -251,47 +252,48 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                 appInfoIntent.addCategory(Intent.CATEGORY_DEFAULT);
                 appInfoIntent.setData(Uri.parse("package:" + MainActivity.this.getPackageName()));
                 startActivity(appInfoIntent);
+                inputSearch.setText(null);
                 drawerLayout.closeDrawer(GravityCompat.END);
                 break;
             case R.id.menu_rate_noted:
                 try {
-                    inputSearch.setText(null);
                     startActivity(new Intent(Intent.ACTION_VIEW,
                             Uri.parse("market://details?id=" + MainActivity.this.getPackageName())));
-                } catch (ActivityNotFoundException e) {
                     inputSearch.setText(null);
+                } catch (ActivityNotFoundException e) {
                     startActivity(new Intent(Intent.ACTION_VIEW,
                             Uri.parse("http://play.google.com/store/apps/details?id=" + MainActivity.this.getPackageName())));
+                    inputSearch.setText(null);
                 }
                 drawerLayout.closeDrawer(GravityCompat.END);
                 break;
             case R.id.menu_share_noted:
-                inputSearch.setText(null);
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, "NOTED - Don't Bother Remembering!");
                 String app_url = "https://play.google.com/store/apps/details?id=" + MainActivity.this.getPackageName();
                 shareIntent.putExtra(Intent.EXTRA_TEXT, app_url);
                 startActivity(Intent.createChooser(shareIntent, "Share via"));
+                inputSearch.setText(null);
                 drawerLayout.closeDrawer(GravityCompat.END);
                 break;
             case R.id.menu_more_apps:
                 try {
-                    inputSearch.setText(null);
                     startActivity(new Intent(Intent.ACTION_VIEW,
                             Uri.parse("market://developer?id=Developer+Depository")));
-                } catch (ActivityNotFoundException e) {
                     inputSearch.setText(null);
+                } catch (ActivityNotFoundException e) {
                     startActivity(new Intent(Intent.ACTION_VIEW,
                             Uri.parse("https://play.google.com/store/apps/developer?id=Developer+Depository")));
+                    inputSearch.setText(null);
                 }
                 drawerLayout.closeDrawer(GravityCompat.END);
                 break;
             case R.id.menu_privacy_policy:
-                inputSearch.setText(null);
                 String privacyPolicyUrl = "https://developerdepository.wixsite.com/noted-policies";
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(privacyPolicyUrl));
                 startActivity(browserIntent);
+                inputSearch.setText(null);
                 drawerLayout.closeDrawer(GravityCompat.END);
                 break;
         }
@@ -565,7 +567,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                 .setMessage("Are you sure you want to delete this note?")
                 .setAnimation(R.raw.lottie_delete)
                 .setCancelable(false)
-                .setPositiveButton("Delete", R.drawable.material_dialog_delete, (dialogInterface, which) -> {
+                .setPositiveButton("Delete", R.drawable.ic_material_dialog_delete, (dialogInterface, which) -> {
                     @SuppressLint("StaticFieldLeak")
                     class DeleteNoteTask extends AsyncTask<Void, Void, Void> {
 
@@ -595,7 +597,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener, Na
                     new DeleteNoteTask().execute();
                     dialogInterface.dismiss();
                 })
-                .setNegativeButton("Cancel", R.drawable.material_dialog_cancel, (dialogInterface, which) -> dialogInterface.dismiss())
+                .setNegativeButton("Cancel", R.drawable.ic_material_dialog_cancel, (dialogInterface, which) -> dialogInterface.dismiss())
                 .build();
         materialDialog.show();
     }

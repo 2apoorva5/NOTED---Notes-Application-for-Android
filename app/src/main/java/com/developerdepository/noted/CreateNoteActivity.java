@@ -676,7 +676,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                 .setMessage("Are you sure you want to delete this note?")
                 .setAnimation(R.raw.lottie_delete)
                 .setCancelable(false)
-                .setPositiveButton("Delete", R.drawable.material_dialog_delete, (dialogInterface, which) -> {
+                .setPositiveButton("Delete", R.drawable.ic_material_dialog_delete, (dialogInterface, which) -> {
                     @SuppressLint("StaticFieldLeak")
                     class DeleteNoteTask extends AsyncTask<Void, Void, Void> {
 
@@ -700,7 +700,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                     new DeleteNoteTask().execute();
                     dialogInterface.dismiss();
                 })
-                .setNegativeButton("Cancel", R.drawable.material_dialog_cancel, (dialogInterface, which) -> dialogInterface.dismiss())
+                .setNegativeButton("Cancel", R.drawable.ic_material_dialog_cancel, (dialogInterface, which) -> dialogInterface.dismiss())
                 .build();
         materialDialog.show();
     }

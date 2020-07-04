@@ -30,7 +30,7 @@
         <item name="material_dialog_title_text_color">@color/colorText</item>
         <item name="material_dialog_message_text_color">@color/colorText</item>
         <item name="material_dialog_positive_button_color">@color/colorPrimaryDark</item>
-        <item name="material_dialog_positive_button_text_color">@android:color/white</item>
+        <item name="material_dialog_positive_button_text_color">@android:color/black</item>
         <item name="material_dialog_negative_button_text_color">@color/colorPrimaryDark</item>
     </style>
 
@@ -58,6 +58,7 @@
     </style>
 
     <style name="NavigationMenuTextStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/poppins</item>
     </style>
