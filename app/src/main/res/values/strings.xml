@@ -29,7 +29,4 @@
     <string name="rate_dialog_ok">Rate It Now</string>
     <string name="rate_dialog_cancel">Remind Me Later</string>
     <string name="share_note">Share Note</string>
-    <string name="default_version">Version</string>
-    <string name="app_info_copyright">&#xa9; 2020 by Developer Depository</string>
-    <string name="privacy_policy">Privacy Policy</string>
 </resources>
