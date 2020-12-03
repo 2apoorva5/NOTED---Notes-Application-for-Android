@@ -133,9 +133,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
                     }
                     notes = temp;
                 }
-                new Handler(Looper.getMainLooper()).post(() -> {
-                    notifyDataSetChanged();
-                });
+                new Handler(Looper.getMainLooper()).post(() -> notifyDataSetChanged());
             }
         }, 500);
     }
