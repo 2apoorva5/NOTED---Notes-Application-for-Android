@@ -17,7 +17,7 @@
         android:layout_marginStart="12dp"
         android:src="@drawable/ic_web_link"
         android:scaleType="centerCrop"
-        android:tint="@color/colorIcons"
+        app:tint="@color/colorIcons"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 

@@ -41,7 +41,7 @@
             android:layout_marginStart="12dp"
             android:src="@drawable/ic_read_note"
             android:scaleType="centerCrop"
-            android:tint="@color/colorIcons"
+            app:tint="@color/colorIcons"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
@@ -87,7 +87,7 @@
             android:layout_marginStart="12dp"
             android:src="@drawable/ic_menu_share"
             android:scaleType="centerCrop"
-            android:tint="@color/colorIcons"
+            app:tint="@color/colorIcons"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
@@ -135,7 +135,7 @@
             android:layout_marginStart="12dp"
             android:src="@drawable/ic_delete"
             android:scaleType="centerCrop"
-            android:tint="@color/colorIcons"
+            app:tint="@color/colorIcons"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
@@ -169,7 +169,7 @@
         android:layout_marginStart="12dp"
         android:src="@drawable/ic_color"
         android:scaleType="centerCrop"
-        android:tint="@color/colorIcons"
+        app:tint="@color/colorIcons"
         app:layout_constraintTop_toBottomOf="@+id/layout_delete_note"
         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -232,7 +232,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/ic_check"
-                    android:tint="@android:color/white"
+                    app:tint="@android:color/white"
                     android:padding="8dp"/>
 
             </FrameLayout>
@@ -258,7 +258,7 @@
                     android:id="@+id/check_color2"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:tint="@android:color/white"
+                    app:tint="@android:color/white"
                     android:padding="8dp"/>
 
             </FrameLayout>
@@ -284,7 +284,7 @@
                     android:id="@+id/check_color3"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:tint="@android:color/white"
+                    app:tint="@android:color/white"
                     android:padding="8dp"/>
 
             </FrameLayout>
@@ -310,7 +310,7 @@
                     android:id="@+id/check_color4"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:tint="@android:color/white"
+                    app:tint="@android:color/white"
                     android:padding="8dp"/>
 
             </FrameLayout>
@@ -336,7 +336,7 @@
                     android:id="@+id/check_color5"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:tint="@android:color/white"
+                    app:tint="@android:color/white"
                     android:padding="8dp"/>
 
             </FrameLayout>
@@ -362,7 +362,7 @@
                     android:id="@+id/check_color6"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:tint="@android:color/white"
+                    app:tint="@android:color/white"
                     android:padding="8dp"/>
 
             </FrameLayout>
@@ -388,7 +388,7 @@
                     android:id="@+id/check_color7"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:tint="@android:color/white"
+                    app:tint="@android:color/white"
                     android:padding="8dp"/>
 
             </FrameLayout>
@@ -416,7 +416,7 @@
                     android:id="@+id/check_color8"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:tint="@android:color/white"
+                    app:tint="@android:color/white"
                     android:padding="8dp"/>
 
             </FrameLayout>
