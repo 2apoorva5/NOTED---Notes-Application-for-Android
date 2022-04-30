@@ -41,10 +41,10 @@
             android:layout_marginStart="12dp"
             android:src="@drawable/ic_camera"
             android:scaleType="centerCrop"
-            android:tint="@color/colorIcons"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tint="@color/colorIcons" />
 
         <TextView
             android:id="@+id/text_take_photo"
@@ -88,10 +88,10 @@
             android:layout_marginStart="12dp"
             android:src="@drawable/ic_image"
             android:scaleType="centerCrop"
-            android:tint="@color/colorIcons"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tint="@color/colorIcons" />
 
         <TextView
             android:id="@+id/text_add_image"
@@ -135,10 +135,10 @@
             android:layout_marginStart="12dp"
             android:src="@drawable/ic_voice"
             android:scaleType="centerCrop"
-            android:tint="@color/colorIcons"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tint="@color/colorIcons" />
 
         <TextView
             android:id="@+id/text_voice_note"
@@ -184,10 +184,10 @@
             android:layout_marginStart="12dp"
             android:src="@drawable/ic_web_link"
             android:scaleType="centerCrop"
-            android:tint="@color/colorIcons"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tint="@color/colorIcons" />
 
         <TextView
             android:id="@+id/text_add_url"

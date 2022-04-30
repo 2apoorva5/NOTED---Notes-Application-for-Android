@@ -37,7 +37,6 @@ import com.developerdepository.noted.database.NotesDatabase;
 import com.developerdepository.noted.entities.Note;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.shreyaspatil.MaterialDialog.MaterialDialog;
 import com.tapadoo.alerter.Alerter;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
@@ -48,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import dev.shreyaspatil.MaterialDialog.MaterialDialog;
 import maes.tech.intentanim.CustomIntent;
 
 public class CreateNoteActivity extends AppCompatActivity {

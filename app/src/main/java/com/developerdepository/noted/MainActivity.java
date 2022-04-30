@@ -1,5 +1,7 @@
 package com.developerdepository.noted;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -56,7 +58,6 @@ import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
-import com.shreyaspatil.MaterialDialog.MaterialDialog;
 import com.tapadoo.alerter.Alerter;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
@@ -66,10 +67,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import dev.shreyaspatil.MaterialDialog.MaterialDialog;
 import hotchemi.android.rate.AppRate;
 import maes.tech.intentanim.CustomIntent;
-
-import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity implements NotesListener, NavigationView.OnNavigationItemSelectedListener {
 

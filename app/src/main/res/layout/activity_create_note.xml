@@ -27,13 +27,13 @@
                 android:layout_marginStart="12dp"
                 android:src="@drawable/ic_back"
                 android:scaleType="centerCrop"
-                android:tint="@color/colorIcons"
                 android:contentDescription="@string/app_name"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:tint="@color/colorIcons" />
 
             <ImageButton
                 android:id="@+id/create_note_save_btn"
@@ -42,14 +42,14 @@
                 android:layout_marginEnd="12dp"
                 android:src="@drawable/ic_save"
                 android:scaleType="centerCrop"
-                android:tint="@color/colorIcons"
                 android:contentDescription="@string/app_name"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
                 app:layout_constraintTop_toTopOf="@+id/create_note_back_btn"
                 app:layout_constraintBottom_toBottomOf="@+id/create_note_back_btn"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:tint="@color/colorIcons" />
 
             <EditText
                 android:id="@+id/input_note_title"
@@ -160,11 +160,11 @@
                 android:contentDescription="@string/app_name"
                 android:padding="4dp"
                 android:src="@drawable/ic_remove"
-                android:tint="@color/colorBackground"
                 android:visibility="gone"
                 app:layout_constraintTop_toTopOf="@+id/text_url"
                 app:layout_constraintBottom_toBottomOf="@+id/text_url"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:tint="@color/colorBackground" />
 
             <ImageView
                 android:id="@+id/image_note"
@@ -190,10 +190,10 @@
                 android:contentDescription="@string/app_name"
                 android:padding="4dp"
                 android:src="@drawable/ic_remove"
-                android:tint="@color/colorBackground"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@+id/image_note"
-                app:layout_constraintTop_toTopOf="@+id/image_note"/>
+                app:layout_constraintTop_toTopOf="@+id/image_note"
+                app:tint="@color/colorBackground" />
 
             <EditText
                 android:id="@+id/input_note"
@@ -239,13 +239,13 @@
             android:layout_marginStart="12dp"
             android:src="@drawable/ic_add_actions"
             android:scaleType="centerCrop"
-            android:tint="@color/colorIcons"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tint="@color/colorIcons" />
 
         <ImageButton
             android:id="@+id/create_note_options_menu"
@@ -254,13 +254,13 @@
             android:layout_marginEnd="12dp"
             android:src="@drawable/ic_options_menu"
             android:scaleType="centerCrop"
-            android:tint="@color/colorIcons"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tint="@color/colorIcons" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

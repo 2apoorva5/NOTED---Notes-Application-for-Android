@@ -1,5 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-hdpi/activity_create_note.xml" value="0.5725" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-hdpi/activity_main.xml" value="0.5725" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-hdpi/layout_add_actions.xml" value="0.5725" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-hdpi/layout_add_image.xml" value="0.5725" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-hdpi/layout_add_url.xml" value="0.5725" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-hdpi/layout_miscellaneous.xml" value="0.5725" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-mdpi/activity_create_note.xml" value="0.8837209302325582" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-mdpi/activity_main.xml" value="0.8837209302325582" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-mdpi/layout_add_actions.xml" value="0.8837209302325582" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-mdpi/layout_add_image.xml" value="0.8837209302325582" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-mdpi/layout_add_url.xml" value="0.8837209302325582" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-mdpi/layout_miscellaneous.xml" value="0.8171091445427728" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xhdpi/activity_create_note.xml" value="0.3578125" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xhdpi/activity_main.xml" value="0.18615591397849462" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xhdpi/item_container_note.xml" value="0.3578125" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xhdpi/layout_add_actions.xml" value="0.3578125" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xhdpi/layout_add_image.xml" value="0.3578125" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xhdpi/layout_add_url.xml" value="0.3578125" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xhdpi/layout_miscellaneous.xml" value="0.3578125" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xhdpi/layout_navigation_header.xml" value="0.3578125" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xhdpi/layout_reading_note.xml" value="0.3578125" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xxhdpi/activity_create_note.xml" value="0.21203703703703702" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xxhdpi/activity_main.xml" value="0.21203703703703702" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xxhdpi/activity_splash_screen.xml" value="0.21203703703703702" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xxhdpi/item_container_note.xml" value="0.21203703703703702" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xxhdpi/layout_add_actions.xml" value="0.21203703703703702" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xxhdpi/layout_add_image.xml" value="0.21203703703703702" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xxhdpi/layout_add_url.xml" value="0.21203703703703702" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xxhdpi/layout_miscellaneous.xml" value="0.21203703703703702" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xxhdpi/layout_navigation_header.xml" value="0.21203703703703702" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xxhdpi/layout_reading_note.xml" value="0.21203703703703702" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xxxhdpi/activity_create_note.xml" value="0.176" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xxxhdpi/activity_main.xml" value="0.176" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xxxhdpi/activity_splash_screen.xml" value="0.15472972972972973" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xxxhdpi/item_container_note.xml" value="0.15472972972972973" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xxxhdpi/layout_add_actions.xml" value="0.15472972972972973" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xxxhdpi/layout_add_image.xml" value="0.15472972972972973" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xxxhdpi/layout_add_url.xml" value="0.15472972972972973" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xxxhdpi/layout_miscellaneous.xml" value="0.15472972972972973" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xxxhdpi/layout_navigation_header.xml" value="0.14662162162162162" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout-xxxhdpi/layout_reading_note.xml" value="0.15472972972972973" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout/activity_create_note.xml" value="1.1515151515151516" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout/activity_main.xml" value="0.5246212121212122" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout/layout_add_actions.xml" value="1.1515151515151516" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout/layout_add_image.xml" value="1.1515151515151516" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout/layout_add_url.xml" value="1.1515151515151516" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/layout/layout_miscellaneous.xml" value="1.1515151515151516" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/menu/main_menu.xml" value="0.9041666666666667" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/menu/note_menu.xml" value="0.176" />
+        <entry key="..\:/Users/apoor/AndroidStudioProjects/NOTED/app/src/main/res/menu/quick_actions_menu.xml" value="0.15472972972972973" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

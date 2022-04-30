@@ -41,10 +41,10 @@
             android:layout_marginStart="12dp"
             android:src="@drawable/ic_read_note"
             android:scaleType="centerCrop"
-            android:tint="@color/colorIcons"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tint="@color/colorIcons" />
 
         <TextView
             android:id="@+id/text_read_note"
@@ -88,10 +88,10 @@
             android:layout_marginStart="12dp"
             android:src="@drawable/ic_menu_share"
             android:scaleType="centerCrop"
-            android:tint="@color/colorIcons"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tint="@color/colorIcons" />
 
         <TextView
             android:id="@+id/text_share_note"
@@ -137,10 +137,10 @@
             android:layout_marginStart="12dp"
             android:src="@drawable/ic_delete"
             android:scaleType="centerCrop"
-            android:tint="@color/colorIcons"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tint="@color/colorIcons" />
 
         <TextView
             android:id="@+id/text_delete_note"
@@ -172,9 +172,9 @@
         android:layout_marginStart="12dp"
         android:src="@drawable/ic_color"
         android:scaleType="centerCrop"
-        android:tint="@color/colorIcons"
         app:layout_constraintTop_toBottomOf="@+id/layout_delete_note"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/colorIcons" />
 
     <TextView
         android:id="@+id/text_pick_color"
@@ -236,8 +236,8 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:src="@drawable/ic_check"
-                    android:tint="@android:color/white"
-                    android:padding="6dp"/>
+                    android:padding="6dp"
+                    app:tint="@android:color/white" />
 
             </FrameLayout>
 
@@ -262,8 +262,8 @@
                     android:id="@+id/check_color2"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:tint="@android:color/white"
-                    android:padding="6dp"/>
+                    android:padding="6dp"
+                    app:tint="@android:color/white" />
 
             </FrameLayout>
 
@@ -288,8 +288,8 @@
                     android:id="@+id/check_color3"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:tint="@android:color/white"
-                    android:padding="6dp"/>
+                    android:padding="6dp"
+                    app:tint="@android:color/white" />
 
             </FrameLayout>
 
@@ -314,8 +314,8 @@
                     android:id="@+id/check_color4"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:tint="@android:color/white"
-                    android:padding="6dp"/>
+                    android:padding="6dp"
+                    app:tint="@android:color/white" />
 
             </FrameLayout>
 
@@ -340,8 +340,8 @@
                     android:id="@+id/check_color5"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:tint="@android:color/white"
-                    android:padding="6dp"/>
+                    android:padding="6dp"
+                    app:tint="@android:color/white" />
 
             </FrameLayout>
 
@@ -366,8 +366,8 @@
                     android:id="@+id/check_color6"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:tint="@android:color/white"
-                    android:padding="6dp"/>
+                    android:padding="6dp"
+                    app:tint="@android:color/white" />
 
             </FrameLayout>
 
@@ -392,8 +392,8 @@
                     android:id="@+id/check_color7"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:tint="@android:color/white"
-                    android:padding="6dp"/>
+                    android:padding="6dp"
+                    app:tint="@android:color/white" />
 
             </FrameLayout>
 
@@ -420,8 +420,8 @@
                     android:id="@+id/check_color8"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:tint="@android:color/white"
-                    android:padding="6dp"/>
+                    android:padding="6dp"
+                    app:tint="@android:color/white" />
 
             </FrameLayout>
 

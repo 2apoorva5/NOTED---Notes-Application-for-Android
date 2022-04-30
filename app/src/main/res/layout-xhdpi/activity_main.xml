@@ -54,14 +54,14 @@
             android:layout_marginEnd="12dp"
             android:src="@drawable/ic_navigation_menu"
             android:scaleType="centerCrop"
-            android:tint="@color/colorIcons"
             android:contentDescription="@string/app_name"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintTop_toTopOf="@+id/text_my_notes"
             app:layout_constraintBottom_toBottomOf="@+id/text_my_notes"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/colorIcons" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_search"

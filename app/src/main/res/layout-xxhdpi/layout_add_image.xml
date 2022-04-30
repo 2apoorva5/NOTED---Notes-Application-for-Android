@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_add_image_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -49,10 +48,10 @@
             android:layout_marginStart="12dp"
             android:src="@drawable/ic_camera"
             android:scaleType="centerCrop"
-            android:tint="@color/colorIcons"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tint="@color/colorIcons" />
 
         <TextView
             android:id="@+id/text_take_photo"
@@ -97,10 +96,10 @@
             android:layout_marginStart="12dp"
             android:src="@drawable/ic_image"
             android:scaleType="centerCrop"
-            android:tint="@color/colorIcons"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tint="@color/colorIcons" />
 
         <TextView
             android:id="@+id/text_select_image"
